@@ -1,4 +1,3 @@
-import fs from "fs";
 import { PdfReader, Rule, parseTable} from "pdfreader";
 const content = [];
 
@@ -10,10 +9,10 @@ const res = new Promise((resolve, reject) => {
             .parseTable(3)
             .then((table) =>
                 content.push({
-                    "parseTable.renderMatrix": lib.parseTable.renderMatrix(
+                    "parseTable.renderMatrix": parseTable.renderMatrix(
                         table.matrix
                     ),
-                    "parseTable.renderItems": lib.parseTable.renderItems(table.items),
+                    "parseTable.renderItems": parseTable.renderItems(table.items),
                 })
             ),
     ]
