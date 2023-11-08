@@ -3,6 +3,8 @@ const content = [];
 
 const dateRegexp = new RegExp("(.*\\d{1,2}\\/\\d{1,2}\\/\\d{2,4}$)")
 const incompleteDateRegexp = new RegExp("(.*\\d{1,2}\\/\\d{1,2}\\/\\d{2,4} [a|à]s*)")
+const singleDateRegexp = new RegExp("\\d{1,2}\\/\\d{1,2}\\/\\d{2,4}", "g")
+
 const contentType = {
     DATE_HEAD: "dateHead",
     DATE_APPENDIX: "dateAppendix",
@@ -26,6 +28,19 @@ const addParsedContent = function (text, type) {
     }
 }
 
+const parseDateString = function(event) {
+    let date;
+    const dates = [];
+
+    while ((date = singleDateRegexp.exec(event.dateString)) !== null) {
+        console.log(`Found ${date[0]}. Next starts at ${singleDateRegexp.lastIndex}.`);
+        const dateParts = date[0].split('/')
+        dates.push(new Date(parseInt(dateParts[2]), parseInt(dateParts[1]) - 1, parseInt(dateParts[0])));
+        // Expected output: "Found foo. Next starts at 9."
+        // Expected output: "Found foo. Next starts at 19."
+    }
+    return dates;
+}
 
 
 const res = new Promise((resolve, reject) => {
@@ -76,5 +91,6 @@ const res = new Promise((resolve, reject) => {
     });
 })
 await res
+parseDateString(content[0]);
 
 console.log(content)
