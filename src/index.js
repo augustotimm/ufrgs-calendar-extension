@@ -39,38 +39,44 @@ const addParsedContent = function (text, type) {
 
 const res = new Promise((resolve, reject) => {
     const rules = [
-        Rule.on(/^PRIMEIRO PERÍODO LETIVO DE 2022 \(2022\/1\)$/)
+        Rule.on(/^Primeiro Período Letivo de 2024$/)
             .parseTable(3)
             .then((table) => {
                     let dateAppendix = false;
+                    let isValidContent = false
 
                     table.items.map(function (element) {
                         const dateMatch = dateRegexp.test(element.text);
 
                         if (incompleteDateRegexp.test(element.text) && !dateMatch) {
                             dateAppendix = true;
+                            isValidContent = true
                             addParsedContent(element.text, contentType.DATE_HEAD);
                             return;
                         }
 
                         if (dateMatch && dateAppendix) {
                             dateAppendix = false;
+                            isValidContent = true
                             addParsedContent(element.text, contentType.DATE_APPENDIX);
                             return;
                         }
                         if(dateMatch) {
+                            isValidContent = true
                             addParsedContent(element.text, contentType.DATE_HEAD);
                             return;
                         }
 
-                        content[content.length - 1].eventString += element.text;
+                        if(isValidContent) {
+                            content[content.length - 1].eventString += element.text;
+                        }
                         return;
                     })
                 }
             ),
     ]
     const processItem = Rule.makeItemProcessor(rules);
-    new PdfReader().parseFileItems("/home/timm/repos/ufrgs-calendar-extension/files/portaria.pdf", (err, item) => {
+    new PdfReader().parseFileItems("/home/timm/repos/ufrgs-calendar-extension/files/calendario 24.pdf", (err, item) => {
         if (err) reject(err);
         else {
             processItem(item);
