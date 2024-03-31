@@ -1,6 +1,6 @@
 import { PdfReader, Rule} from "pdfreader";
-import { parseDateString } from "./dateParser.js";
 import {createCalendarFromContents} from "./calendarManager.js";
+import {sendCalendarMessage} from "./mailer.js";
 const content = [];
 
 const dateRegexp = new RegExp("(.*\\d{1,2}\\/\\d{1,2}\\/\\d{2,4}$)");
@@ -79,6 +79,6 @@ const res = new Promise((resolve, reject) => {
     });
 })
 await res;
-let calendar = createCalendarFromContents(content);
+ let calendar = createCalendarFromContents(content);
 // const parsedDates = content.map(parseDateString)
-console.log(calendar);
+sendCalendarMessage(calendar)

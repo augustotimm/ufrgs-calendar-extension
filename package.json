@@ -19,6 +19,7 @@
   "homepage": "https://github.com/augustotimm/ufrgs-calendar-extension#readme",
   "dependencies": {
     "ical-generator": "^7.0.0",
+    "nodemailer": "^6.9.13",
     "pdfreader": "^3.0.2"
   },
   "type": "module"
