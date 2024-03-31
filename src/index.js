@@ -1,5 +1,6 @@
 import { PdfReader, Rule} from "pdfreader";
 import { parseDateString } from "./dateParser.js";
+import {createCalendarFromContents} from "./calendarManager.js";
 const content = [];
 
 const dateRegexp = new RegExp("(.*\\d{1,2}\\/\\d{1,2}\\/\\d{2,4}$)");
@@ -10,6 +11,13 @@ const contentType = {
     DATE_APPENDIX: "dateAppendix",
     EVENT: "event"
 }
+/*
+    {
+        dateString: string,
+        eventString: string, // event name
+    }
+
+ */
 
 const addParsedContent = function (text, type) {
     switch (type) {
@@ -62,7 +70,7 @@ const res = new Promise((resolve, reject) => {
             ),
     ]
     const processItem = Rule.makeItemProcessor(rules);
-    new PdfReader().parseFileItems("/home/augusto/repos/ufrgs-calendar-extension/files/portaria.pdf", (err, item) => {
+    new PdfReader().parseFileItems("/home/timm/repos/ufrgs-calendar-extension/files/portaria.pdf", (err, item) => {
         if (err) reject(err);
         else {
             processItem(item);
@@ -71,5 +79,6 @@ const res = new Promise((resolve, reject) => {
     });
 })
 await res;
-const parsedDates = content.map(parseDateString)
-console.log(parsedDates)
+let calendar = createCalendarFromContents(content);
+// const parsedDates = content.map(parseDateString)
+console.log(calendar);
