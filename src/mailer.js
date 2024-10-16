@@ -7,18 +7,18 @@ export function sendCalendarMessage (calendar) {
 
     // Create a SMTP transporter object
     let transporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
+        host: 'smtp.mailersend.net',
         port: 587,
         auth: {
-            user: 'flossie78@ethereal.email',
-            pass: 'JMgZUJKbswMXyHzAHg'
+            user: 'MS_8YqKGc@trial-0r83ql3jzzxgzw1j.mlsender.net',
+            pass: 'tKdnqquTLohrEETe'
         }
     });
 
     // Message object
     let message = {
-        from: 'sender@example.com',
-        to: 'recipient@example.com',
+        from: 'MS_8YqKGc@trial-0r83ql3jzzxgzw1j.mlsender.net',
+        to: 'augusto.timm@gmail.com',
         subject: 'Appointment',
         text: 'Please see the attached appointment',
         icalEvent: {

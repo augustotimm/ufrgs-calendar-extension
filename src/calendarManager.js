@@ -15,11 +15,33 @@ export const createCalendarFromContents = function(contentsList) {
 
     contentsList.forEach((element) => {
         const parsedDate = parseDateString(element)
-        calendar.createEvent({
-            start: parsedDate[0],
-            end: parsedDate[parsedDate.length - 1],
-            summary: element.eventString,
-        });
+        if(parsedDate.dates.length > 0) {
+            if(parsedDate.continuous){
+                calendar.createEvent({
+                    start: parsedDate.dates[0],
+                    end: parsedDate[parsedDate.dates.length - 1],
+                    summary: element.eventString,
+                });
+            }
+            else {
+                parsedDate.dates.forEach(date => {
+                    calendar.createEvent({
+                        start: date,
+                        allDay: true,
+                        summary: element.eventString,
+                    });
+                })
+            }
+
+        }
+        else {
+            calendar.createEvent({
+                start: parsedDate.dates[0],
+                allDay: true,
+                summary: element.eventString,
+            });
+        }
+
     })
     return calendar;
 

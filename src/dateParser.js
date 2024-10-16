@@ -6,6 +6,7 @@ const containHoursRegexp = new RegExp("(\\d{1,2}h\\d{0,2}).*(\\d{1,2}h\\d{0,2})"
 const hourStarRangeRegexp = new RegExp("das (\\d{1,2}h\\d{0,2}) de \\d{1,2}\\/\\d{1,2}\\/\\d{2,4}", "i");
 const hourEndRangeRegexp = new RegExp("às(\\d{1,2}h\\d{0,2}) de \\d{1,2}\\/\\d{1,2}\\/\\d{2,4}", "i");
 const hourRangeSingleDateRegexp = new RegExp("das (\\d{1,2}h\\d{0,2}) às\\s*(\\d{1,2}h\\d{0,2})", "i");
+const concatenatedDaysRegexp = new RegExp(".*(\\d{2}) e (\\d{2}\\/\\d{1,2}\\/\\d{2,4}$)")
 
 
 const parseHourString = function(hourString) {
@@ -19,6 +20,7 @@ export const parseDateString = function({dateString}) {
     const hours = [];
     let iterator = 0;
     let singleDate = false;
+    let continuous = true
     const containHour = containHoursRegexp.test(dateString);
 
     if(containHour) {
@@ -41,22 +43,31 @@ export const parseDateString = function({dateString}) {
     }
     while ((date = singleDateRegexp.exec(dateString)) !== null) {
         const dateParts = date[0].split('/')
+        const concatenated = concatenatedDaysRegexp.exec(dateString)
+
         if(containHour) {
             dates.push(new Date(parseInt(dateParts[2]), parseInt(dateParts[1]) - 1, parseInt(dateParts[0]), hours[iterator].hour, hours[iterator].minutes));
-
+            if(concatenated !== null) {
+                continuous = false
+                dates.push(new Date(parseInt(concatenated[1]), parseInt(dateParts[1]) - 1, parseInt(dateParts[0]), hours[iterator].hour, hours[iterator].minutes));
+            }
         } else {
             dates.push(new Date(parseInt(dateParts[2]), parseInt(dateParts[1]) - 1, parseInt(dateParts[0])));
+            if(concatenated !== null) {
+                continuous = false
+                dates.push(new Date(parseInt(concatenated[1]), parseInt(dateParts[1]) - 1, parseInt(dateParts[0])));
+            }
         }
 
         iterator ++;
         if(singleDate) {
             dates.push(new Date(parseInt(dateParts[2]), parseInt(dateParts[1]) - 1, parseInt(dateParts[0]), hours[iterator].hour, hours[iterator].minutes));
-
         }
+
     }
     if( dates.length > 2) {
         console.log(dateString);
     }
-    return dates;
+    return {dates, continuous};
 }
 

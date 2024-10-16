@@ -1,0 +1,437 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//UFRGS student work//calendar export//EN
+METHOD:REQUEST
+NAME:Exported UFRGS Calendar
+X-WR-CALNAME:Exported UFRGS Calendar
+TIMEZONE-ID:America/Sao_Paulo
+X-WR-TIMEZONE:America/Sao_Paulo
+BEGIN:VEVENT
+UID:ec270b46-eb33-406a-ae76-5ff7025f5f87
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART;VALUE=DATE:20231126
+X-MICROSOFT-CDO-ALLDAYEVENT:TRUE
+X-MICROSOFT-MSNCALENDAR-ALLDAYEVENT:TRUE
+SUMMARY:CONCURSO VESTIBULAR 2024.
+END:VEVENT
+BEGIN:VEVENT
+UID:29acbe18-b102-4faf-a7be-cfbc387d27ae
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART;VALUE=DATE:19251126
+X-MICROSOFT-CDO-ALLDAYEVENT:TRUE
+X-MICROSOFT-MSNCALENDAR-ALLDAYEVENT:TRUE
+SUMMARY:CONCURSO VESTIBULAR 2024.
+END:VEVENT
+BEGIN:VEVENT
+UID:1ad15ded-2956-4ed6-be2c-dfb4d2225f29
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20231211T000000
+SUMMARY:LISTÃO: Divulgação da lista dos classificados no Vestibular 202
+ 4.
+END:VEVENT
+BEGIN:VEVENT
+UID:60c9744b-f435-4798-b051-0ec0b70562db
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240326T000000
+SUMMARY:Processo Seletivo Específico de Ingresso de Estudantes Indígenas
+  2024 (PSEI).
+END:VEVENT
+BEGIN:VEVENT
+UID:ae91098a-9859-4a24-b5f2-233bbfc7ec20
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240301T000000
+SUMMARY:PUBLICAÇÃO DA RELAÇÃO DE CANDIDATOS APTOS À MATRÍCULA DE CAL
+ OUROSDE 2024/1: Divulgação no site da UFRGS da relação de candidatos a
+ ptos à matrículade Calouros e demais orientações de matrícula.05/03/2
+ 024\, a partir
+END:VEVENT
+BEGIN:VEVENT
+UID:54ca95f7-14b7-4c98-8366-b897ac8ada70
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240306T000000
+SUMMARY:às 23h59minMATRÍCULA ONLINE DOS CALOUROS 2024/1 - ENVIO DA SOLIC
+ ITAÇÃO PELOCANDIDATO: Período para envio da solicitação de matrícula
+  via Portal do Candidatopara candidatos classificados para ingresso em 202
+ 4/1.
+END:VEVENT
+BEGIN:VEVENT
+UID:3d0c736b-734c-42fc-be00-7b95616545ae
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240307T000000
+SUMMARY:ENCOMENDA DE MATRÍCULA PARA VETERANOS: Período para os alunos ve
+ teranos\,aptos à matrícula de 2024/1\, solicitarem matrícula nas Ativid
+ ades de Ensino via Portaldo Aluno.
+END:VEVENT
+BEGIN:VEVENT
+UID:4c8b0ae3-2606-4d85-9d7a-8694c6b66d23
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240313T000000
+SUMMARY:RESULTADO DA ENCOMENDA DE MATRÍCULA: Divulgação dos resultados 
+ damatrícula de estudantes veteranos no Portal do Aluno.13/03/2024 das 9h 
+ às23h59minAJUSTE DE MATRÍCULA PARA ALUNOS VETERANOS: Período para aluno
+ s veteranossolicitarem\, via Portal do Aluno\, a inclusão de matrícula e
+ m novas Atividades deEnsino/Turmas\, substituições e/ou exclusões de ma
+ trícula sem prejuízo noordenamento de matrícula\, ou outros ajustes no 
+ resultado da Encomenda para2024/1.
+END:VEVENT
+BEGIN:VEVENT
+UID:6bc35d63-e35a-4fbf-b940-a3afb30e7482
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240316T000000
+SUMMARY:das 4hRESULTADO FINAL DE MATRÍCULA DOS ESTUDANTES VETERANOS: Divu
+ lgação dosresultados finais da matrícula para 2024/1 de estudantes vete
+ ranos\, no Portal doAluno.INÍCIO DAS AULAS do 1º Período Letivo de 2024
+ .Documento gerado sob autenticação Nº ZIM.222.824.8AS\, disponível no 
+ endereçohttp://www.ufrgs.br/autenticacaoDocumento certificado eletronicam
+ ente\, conforme Portaria nº3362/2016\, que institui o Sistema de Document
+ os Eletrônicos da UFRGS.2/4
+END:VEVENT
+BEGIN:VEVENT
+UID:5cee05b6-e24f-411e-80ab-8cbc11d2ed95
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240307T000000
+SUMMARY:TRANCAMENTO DE MATRÍCULA: Período para os Estudantes solicitarem
+  oTrancamento de Matrícula para 2024/1\, tanto para estudantes regularmen
+ tematriculados quanto para alunos sem matrícula em 2024/1\, via Portal do
+  Aluno.
+END:VEVENT
+BEGIN:VEVENT
+UID:e4746482-1eed-4501-a875-6bdb90b67606
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240318T000000
+SUMMARY:
+END:VEVENT
+BEGIN:VEVENT
+UID:8d1af841-de3d-4f9f-b078-7ef576308690
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240324T000000
+SUMMARY:EXCLUSÃO DE MATRÍCULA: Período para os Estudantes efetuarem\, n
+ o Portal doAluno\, exclusão de matrícula em Atividades de Ensino de 2024
+ /1\, comaproveitamento das vagas\, sem prejuízo ao ordenamento.
+END:VEVENT
+BEGIN:VEVENT
+UID:5aa674bb-a0a5-4228-841f-a5b5e6f8f5c6
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240325T000000
+SUMMARY:MATRÍCULA DE INCLUSÃO: Período para os Alunos solicitarem\, via
+  Portal do Aluno\, ainclusão de matrícula em vagas remanescentes de 2024
+ /1.
+END:VEVENT
+BEGIN:VEVENT
+UID:4f806f5b-6a19-446a-921f-7ff42d3ffa48
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240327T000000
+SUMMARY:das 20hRESULTADO DA MATRÍCULA DE INCLUSÃO E EXTRACURRICULAR: Div
+ ulgação doresultado da Matrícula de Inclusão e dos pedidos de Matrícu
+ la Extracurricular\, noPortal do Aluno.
+END:VEVENT
+BEGIN:VEVENT
+UID:03487b54-983e-4698-a60c-490f322f7084
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240328T000000
+SUMMARY:CANCELAMENTO JUSTIFICADO MATRÍCULA: Período para o Aluno solicit
+ ar\, atravésde processo administrativo\, o Cancelamento Justificado de Ma
+ trícula à Comissão deGraduação.
+END:VEVENT
+BEGIN:VEVENT
+UID:d9baf2f1-5120-421c-81aa-3b266d36116a
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240518T000000
+SUMMARY:PORTAS ABERTAS - 2024.
+END:VEVENT
+BEGIN:VEVENT
+UID:28d73a30-1759-45f4-9c96-ac3e3b294c3b
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240701T000000
+SUMMARY:AVALIAÇÃO DOCENTE 2024/1 e AUTOAVALIAÇÃO DOCENTE: Período par
+ a Avaliaçãodo Docente pelos Discentes\, através do Portal do Aluno e Pe
+ ríodo de AutoavaliaçãoDocente\, através do Portal do Servidor.
+END:VEVENT
+BEGIN:VEVENT
+UID:fb0688ea-4d53-4883-b9fc-1f869ccf1a56
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240720T000000
+SUMMARY:TÉRMINO DAS AULAS do 1º Período Letivo de 2024.
+END:VEVENT
+BEGIN:VEVENT
+UID:8dbfd6cc-90cc-46f2-b3b2-66c3caf5ce4a
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240722T000000
+SUMMARY:APROPRIAÇÃO DOS CONCEITOS: Data limite para apropriação dos co
+ nceitos dasAtividades de Ensino no Portal\, pelos Professores responsávei
+ s pelas atividades.
+END:VEVENT
+BEGIN:VEVENT
+UID:d08c1cef-a7d2-4fdb-8c4a-a0bbf84aebac
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240723T000000
+SUMMARY:CONCEITOS FINAIS: Divulgação dos conceitos finais de 2024/1.
+END:VEVENT
+BEGIN:VEVENT
+UID:b95b72a6-aafe-48c0-bc0b-8e0e592b57a5
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240726T000000
+SUMMARY:REVISÃO DE CONCEITOS: Data limite para os Estudantes solicitarem 
+ a revisão deconceitos de 2024/1\, junto aos Departamentos.
+END:VEVENT
+BEGIN:VEVENT
+UID:1f8aa14a-b7f7-493b-a7ea-809354760be0
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240807T000000
+SUMMARY:COLAÇÕES DE GRAU: Período destinado às colações de grau de 2
+ 024/1.Segundo Período Letivo de 2024
+END:VEVENT
+BEGIN:VEVENT
+UID:6899e667-b67b-4ea5-96c6-8862af1f7121
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240724T000000
+SUMMARY:PUBLICAÇÃO DA RELAÇÃO DE CANDIDATOS APTOS À MATRÍCULA DE CAL
+ OUROSDE 2024/2: Divulgação no site da UFRGS da relação de candidatos a
+ ptos à matrículade Calouros e demais orientações de matrícula.29/07/2
+ 024\, a partir
+END:VEVENT
+BEGIN:VEVENT
+UID:86589daa-57ad-459b-9689-55eb7bf9eb49
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240730T000000
+SUMMARY:às 23h59minMATRÍCULA ONLINE DOS CALOUROS 2024/2 - ENVIO DA SOLIC
+ ITAÇÃO PELOCANDIDATO: Período para envio da solicitação de matrícula
+  via Portal do Candidatopara candidatos classificados para ingresso em 202
+ 4/2.
+END:VEVENT
+BEGIN:VEVENT
+UID:2c60fcc6-8b02-4255-b96e-7f0857a8c744
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240801T000000
+SUMMARY:ENCOMENDA DE MATRÍCULA PARA VETERANOS: Período para os alunos ve
+ teranos\,aptos à matrícula de 2024/2\, solicitarem matrícula nas Ativid
+ ades de Ensino via Portaldo Aluno.
+END:VEVENT
+BEGIN:VEVENT
+UID:9dbca86c-806d-4051-920e-8faafa7fb872
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240807T000000
+SUMMARY:RESULTADO DA ENCOMENDA DE MATRÍCULA: Divulgação dos resultados 
+ damatrícula de estudantes veteranos no Portal do Aluno.07/08/2024 das 9h 
+ às23h59minAJUSTE DE MATRÍCULA PARA ALUNOS VETERANOS: Período para aluno
+ s veteranossolicitarem\, via Portal do Aluno\, a inclusão de matrícula e
+ m novas Atividades deEnsino/Turmas\, substituições e/ou exclusões de ma
+ trícula sem prejuízo noordenamento de matrícula\, ou outros ajustes no 
+ resultado da Encomenda para2024/2.
+END:VEVENT
+BEGIN:VEVENT
+UID:26e200fb-3cca-4a8d-b1f5-370495fd48bf
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240810T000000
+SUMMARY:RESULTADO FINAL DE MATRÍCULA DOS ESTUDANTES VETERANOS: Divulgaç
+ ão dosresultados finais da matrícula para 2024/2 de estudantes veteranos
+ \, no Portal doAluno.INÍCIO DAS AULAS do 2º Período Letivo de 2024.
+END:VEVENT
+BEGIN:VEVENT
+UID:88ee0187-7c77-4c2b-bba5-154ae1eef799
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240801T000000
+SUMMARY:TRANCAMENTO DE MATRÍCULA: Período para os Estudantes solicitarem
+  oTrancamento de Matrícula para 2024/2\, tanto para estudantes regularmen
+ tematriculados quanto para alunos sem matrícula em 2024/2\, via Portal do
+  Aluno.Documento gerado sob autenticação Nº ZIM.222.824.8AS\, disponív
+ el no endereçohttp://www.ufrgs.br/autenticacaoDocumento certificado eletr
+ onicamente\, conforme Portaria nº3362/2016\, que institui o Sistema de Do
+ cumentos Eletrônicos da UFRGS.3/4
+END:VEVENT
+BEGIN:VEVENT
+UID:7040f5d5-1a75-4242-a306-e1feb3955b4b
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240812T000000
+SUMMARY:EXCLUSÃO DE MATRÍCULA: Período para os Estudantes efetuarem\, n
+ o Portal doAluno\, exclusão de matrícula em Atividades de Ensino de 2024
+ /2\, comaproveitamento das vagas\, sem prejuízo ao ordenamento.
+END:VEVENT
+BEGIN:VEVENT
+UID:779c73b2-3af3-4a23-b9dd-5e36de56d3b9
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240819T000000
+SUMMARY:MATRÍCULA DE INCLUSÃO: Período para os Alunos solicitarem\, via
+  Portal do Aluno\, ainclusão de matrícula em vagas remanescentes de 2024
+ /2.
+END:VEVENT
+BEGIN:VEVENT
+UID:888f40bc-50a3-4aff-9d53-a27972760ee2
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240821T000000
+SUMMARY:das 20hRESULTADO DA MATRÍCULA DE INCLUSÃO E EXTRACURRICULAR: Div
+ ulgação doresultado da Matrícula de Inclusão e dos pedidos de Matrícu
+ la Extracurricular\, noPortal do Aluno.
+END:VEVENT
+BEGIN:VEVENT
+UID:f65d04ec-db46-456a-9d50-bfa8c5434354
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240822T000000
+SUMMARY:CANCELAMENTO JUSTIFICADO MATRÍCULA: Período para o Aluno solicit
+ ar\, atravésde processo administrativo\, o Cancelamento Justificado de Ma
+ trícula à Comissão deGraduação.
+END:VEVENT
+BEGIN:VEVENT
+UID:13764bd4-0906-44fc-acc3-56464081c1e2
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240902T000000
+SUMMARY:SALÃO UFRGS/ SEMANA ACADÊMICA.
+END:VEVENT
+BEGIN:VEVENT
+UID:24c81f13-7a47-44e2-8817-9556a2b35a86
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20241202T000000
+SUMMARY:
+END:VEVENT
+BEGIN:VEVENT
+UID:a3d851a5-5718-4eee-808f-294fa89a8ac5
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20250105T000000
+SUMMARY:AVALIAÇÃO DOCENTE 2024/2 e AUTOAVALIAÇÃO DOCENTE: Período par
+ a Avaliaçãodo Docente pelos Discentes\, através do Portal do Aluno e Pe
+ ríodo deAUTOAVALIAÇÃO DOCENTE 2024/2\, através do Portal do Servidor.
+END:VEVENT
+BEGIN:VEVENT
+UID:2576a957-4d49-48e5-ae9f-e55bdafc997e
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20241221T000000
+SUMMARY:TÉRMINO DAS AULAS do 2º Período Letivo de 2024.
+END:VEVENT
+BEGIN:VEVENT
+UID:beb95038-a460-4e52-b146-3719ff581ffc
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20241223T000000
+SUMMARY:APROPRIAÇÃO DOS CONCEITOS: Data limite para apropriação dos co
+ nceitos dasAtividades de Ensino no Portal\, pelos Professores responsávei
+ s pelas atividades.
+END:VEVENT
+BEGIN:VEVENT
+UID:74a1102d-1c86-4b45-a4fa-d3a543da3a41
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20241224T000000
+SUMMARY:CONCEITOS FINAIS: Divulgação dos conceitos finais de 2024/2.
+END:VEVENT
+BEGIN:VEVENT
+UID:d8d9d8ab-40f5-467c-b6a6-f2a64feb43c1
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20241230T000000
+SUMMARY:REVISÃO DE CONCEITOS: Data limite para os Estudantes solicitarem 
+ a revisão deconceitos de 2024/2\, junto aos Departamentos.
+END:VEVENT
+BEGIN:VEVENT
+UID:8f0a2b92-19dc-4dac-812c-3ac9e82f460f
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20250122T000000
+SUMMARY:COLAÇÕES DE GRAU: Período destinado às colações de grau de 2
+ 024/2.DIAS LETIVOS NA GRADUAÇÃO - 2024/1PeríodoInícioFimSemanas Letiva
+ sDias Letivos2024/1
+END:VEVENT
+BEGIN:VEVENT
+UID:d4b0e476-498a-490d-a13b-557b92488860
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240318T000000
+SUMMARY:
+END:VEVENT
+BEGIN:VEVENT
+UID:5b7b6918-0afa-4700-a616-0951ac21b39f
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240720T000000
+SUMMARY:18MêsTotalMarço10Abril26Maio24Junho25Julho18Total103FERIADOS E D
+ IAS NÃO LETIVOS NA GRADUAÇÃO - 2024/11º Período Letivo29/03/2024 - Se
+ xta-feira Santa18/05/2024 - Portas Abertas30/03/2024 - Dia não letivo30/0
+ 5/2024 - Corpus Christi01/05/2024 - Dia do Trabalho 29/06/2024 - Campus Li
+ toral Norte - Feriado Municipal de TramandaíDIAS LETIVOS NA GRADUAÇÃO -
+  2024/2PeríodoInícioFimSemanas LetivasDias Letivos2024/2
+END:VEVENT
+BEGIN:VEVENT
+UID:cfab5e94-2448-4af5-8094-f51fe43f3c17
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240812T000000
+SUMMARY:
+END:VEVENT
+BEGIN:VEVENT
+UID:7033cfe0-0abc-431c-afdc-28b6f47d5d94
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20241221T000000
+SUMMARY:19MêsTotalAgosto18Documento gerado sob autenticação Nº ZIM.222
+ .824.8AS\, disponível no endereçohttp://www.ufrgs.br/autenticacaoDocumen
+ to certificado eletronicamente\, conforme Portaria nº3362/2016\, que inst
+ itui o Sistema de Documentos Eletrônicos da UFRGS.4/4Setembro23Outubro25N
+ ovembro24Dezembro18Total108FERIADOS E DIAS NÃO LETIVOS NA GRADUAÇÃO - 2
+ 024/22º Período Letivo07/09/2024 - Dia da Independência do Brasil02/11/
+ 2024 - Finados20/09/2024 - Revolução Farroupilha15/11/2024 - Proclamaç
+ ão da República12/10/2024 - Nossa Senhora Aparecida28/10/2024 - Dia do S
+ ervidor PúblicoObservações:1. Autorizar a Sra. Pró-Reitora de Graduaç
+ ão\, após entendimento com a Comissão de Graduação do Curso eDireçã
+ o da Unidade envolvida\, a adotar as medidas necessárias à realização 
+ de programas educativosespeciais\, incluídos estágios\, seminários\, ex
+ cursões e outros\, podendo\, para tanto\, determinar a suspensãodas aula
+ s programadas\, desde que seja assegurado o estrito cumprimento dos progra
+ mas das disciplinas e onúmero mínimo de horas estabelecidos na legislaç
+ ão.2. A fim de viabilizar a realização de atividades "extramuros"\, tai
+ s como trabalhos de campo\, excursões eviagens de estudos\, poderão ser 
+ utilizados\, quando indispensável\, dias não letivos.3. Há cursos que d
+ esenvolvem atividades/disciplinas em período diferente aos períodos leti
+ vos estabelecidos\,início e término dos semestres\, considerando suas ca
+ racterísticas e especificidades. Os calendáriosdiferenciados deverão se
+ r aprovados pela Câmara de Graduação do CEPE4. O dia 29 de junho é dia
+  não letivo no Campus Litoral Norte\, devido ao feriado municipal de Tram
+ andaí. Odia 30 de março de 2024 será considerado dia letivo no Campus L
+ itoral Norte.5. De forma excepcional\, poderão ser desenvolvidas atividad
+ es de ensino\, excetuando-se atividades de
+END:VEVENT
+BEGIN:VEVENT
+UID:747a0f4b-80ff-488c-a201-b017c9a58ea3
+SEQUENCE:0
+DTSTAMP:20240715T145427
+DTSTART:20240902T000000
+SUMMARY:6. O Calendário diferenciado do Colégio de Aplicação será div
+ ulgado pela PROGRAD junto ao CalendárioEscolar da UFRGS\, após a sua apr
+ ovação pela Câmara de Graduação do CEPE.CARLOS ANDRE BULHOES MENDESRe
+ itor
+END:VEVENT
+END:VCALENDAR
