@@ -1,99 +1,52 @@
-import { PdfReader, Rule} from "pdfreader";
-import {createCalendarFromContents} from "./calendarManager.js";
-import {sendCalendarMessage} from "./mailer.js";
-import fs from'node:fs';
-
-
-const content = [];
-
-const dateRegexp = new RegExp("(.*\\d{1,2}\\/\\d{1,2}\\/\\d{2,4}$)");
-const incompleteDateRegexp = new RegExp("(.*\\d{1,2}\\/\\d{1,2}\\/\\d{2,4} [a|à]s*)");
-
-const contentType = {
-    DATE_HEAD: "dateHead",
-    DATE_APPENDIX: "dateAppendix",
-    EVENT: "event"
-}
-/*
-    {
-        dateString: string,
-        eventString: string, // event name
-    }
-
- */
-
-const addParsedContent = function (text, type) {
-    switch (type) {
-        case contentType.DATE_APPENDIX:
-            content[content.length - 1].dateString += text;
-            return;
-        case contentType.DATE_HEAD:
-            content.push({dateString: text, eventString: ""});
-            return;
-        case contentType.EVENT:
-            content[content.length - 1].eventString += text;
-            return;
-        default:
-            console.log("add parsed content type error");
-            break;
-    }
-}
-
-
-const res = new Promise((resolve, reject) => {
-    const rules = [
-        Rule.on(/^Primeiro Período Letivo de 2024$/)
-            .parseTable(3)
-            .then((table) => {
-                    let dateAppendix = false;
-                    let isValidContent = false
-
-                    table.items.map(function (element) {
-                        const dateMatch = dateRegexp.test(element.text);
-
-                        if (incompleteDateRegexp.test(element.text) && !dateMatch) {
-                            dateAppendix = true;
-                            isValidContent = true
-                            addParsedContent(element.text, contentType.DATE_HEAD);
-                            return;
-                        }
-
-                        if (dateMatch && dateAppendix) {
-                            dateAppendix = false;
-                            isValidContent = true
-                            addParsedContent(element.text, contentType.DATE_APPENDIX);
-                            return;
-                        }
-                        if(dateMatch) {
-                            isValidContent = true
-                            addParsedContent(element.text, contentType.DATE_HEAD);
-                            return;
-                        }
-
-                        if(isValidContent) {
-                            content[content.length - 1].eventString += element.text;
-                        }
-                        return;
-                    })
-                }
-            ),
-    ]
-    const processItem = Rule.makeItemProcessor(rules);
-    new PdfReader().parseFileItems("/home/timm/repos/ufrgs-calendar-extension/files/calendario 24.pdf", (err, item) => {
-        if (err) reject(err);
-        else {
-            processItem(item);
-            if (!item) resolve(content);
+import { PdfReader, TableParser } from "pdfreader";
+const filename = "/home/timm/repos/ufrgs-calendar-extension/files/calendario 24.pdf";
+const nbCols = 2;
+const cellPadding = 80;
+const columnQuantitizer = (item) => parseFloat(item.x) >= 9;
+// polyfill for String.prototype.padEnd()
+// https://github.com/uxitten/polyfill/blob/master/string.polyfill.js
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat
+if (!String.prototype.padEnd) {
+    String.prototype.padEnd = function padEnd(targetLength, padString) {
+        targetLength = targetLength >> 0; //floor if number or convert non-number to 0;
+        padString = String(padString || " ");
+        if (this.length > targetLength) {
+            return String(this);
+        } else {
+            targetLength = targetLength - this.length;
+            if (targetLength > padString.length) {
+                padString += padString.repeat(targetLength / padString.length); //append to original to ensure we are longer than needed
+            }
+            return String(this) + padString.slice(0, targetLength);
         }
-    });
-})
-await res;
-
-let calendar = createCalendarFromContents(content);
-
-try {
-    fs.writeFileSync('invitation.ics', calendar.toString());
-    // file written successfully
-} catch (err) {
-    console.error(err);
+    };
 }
+const mergeCells = (cells) => (cells || []).map((cell) => cell.text).join("");
+const formatMergedCell = (mergedCell) =>
+    mergedCell.substr(0, cellPadding).padEnd(cellPadding, " ");
+const renderMatrix = (matrix) =>
+    (matrix || [])
+        .map(
+            (row, y) =>
+                row
+                    .map(mergeCells)
+        )
+var table = new TableParser();
+const pagesTable = []
+const pdfReader = new PdfReader();
+pdfReader.parseFileItems(filename, function (err, item) {
+    if (err) console.error(err);
+    else if (!item || item.page) {
+        // end of file, or page
+        const formattedMatrix = renderMatrix(table.getMatrix())
+        pagesTable.push(formattedMatrix)
+        item?.page && console.log("PAGE:", item.page);
+        table = new TableParser(); // new/clear table for next page
+    } else if (item.text) {
+        // accumulate text items into rows object, per line
+        if(item.text === "CONCURSO VESTIBULAR 2024") {
+        }
+        table.processItem(item, columnQuantitizer(item));
+    }
+
+});
