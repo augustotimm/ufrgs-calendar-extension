@@ -6,7 +6,8 @@ const tableStarterPhrase = "Primeiro Período Letivo de"
 const ignoreString = "Segundo Período Letivo de 2024"
 const dateRegexp = new RegExp("(.*\\d{1,2}\\/\\d{1,2}\\/\\d{2,4}$)");
 const incompleteDateRegexp = new RegExp("(.*\\d{1,2}\\/\\d{1,2}\\/\\d{2,4},?.* [a|à]s?($| partir))");
-const startWithCapitalLetter = new RegExp("^[A-Z]+.*")
+const specialEventString = new RegExp("^(20\\d\\d\\/\\d{1,2}).$")
+
 
 const columnQuantitizer = (item) => parseFloat(item.x) >= 9;
 
@@ -68,10 +69,15 @@ let state = "default"
 const stateFunctions = {
     default: (row, lastEntry) => {
         if(!row[1] && row[0]){
-            stateVariables.missingDate = true;
-            return {
-                eventString: row[0],
-            };
+            if(specialEventString.test(row[0])) {
+                lastEntry.eventString = testAndAppend(lastEntry.eventString, row[0]);
+            }
+            else{
+                stateVariables.missingDate = true;
+                return {
+                    eventString: row[0],
+                };
+            }
         }
         const dateMatch = dateRegexp.test(row[1]);
         const incompleteDate = incompleteDateRegexp.test(row[1]);
@@ -123,6 +129,7 @@ const stateFunctions = {
         if(!row[1] && row[0]){
             stateVariables.postAppend = false;
             lastEntry.eventString = testAndAppend(lastEntry.eventString, row[0]);
+
             return;
 
         }
@@ -153,6 +160,11 @@ const stateFunctions = {
             lastEntry.dateString = testAndAppend(lastEntry.dateString, row[1]);
             lastEntry.eventString = testAndAppend(lastEntry.eventString, row[0]);
         }
+    },
+    pendingString: (row, lastEntry) => {
+        lastEntry.eventString = testAndAppend(lastEntry.eventString, row[0]);
+        lastEntry.dateString = testAndAppend(lastEntry.dateString, row[1]);
+        restartStateMachine()
     }
 }
 function calculateState() {
@@ -162,7 +174,7 @@ function calculateState() {
     if(stateVariables.missingDate) {
         state = "missingDate"
     }
-    if(stateVariables.postAppend){
+    if(stateVariables.postAppend && !stateVariables.missingDate) {
         state = "postAppend"
     }
 
@@ -183,17 +195,23 @@ function restartStateMachine(){
 
 function organizeMatrixContent() {
     let startedUsefulTable = false
-
+    let finished = false;
     const finalContent = []
-    extractedContent.forEach((row, index) => {
+    let index = 0
+    while(!finished)
+    {
+        const row = extractedContent[index]
+        index ++;
         if(!startedUsefulTable ){
             startedUsefulTable = row.reduce((acc, curr ) => acc || curr.includes(tableStarterPhrase), false);
         }
         else {
-            if(row[1]?.includes("13/03/2024")){
-                console.log("includs")
-            }
             if(row[0] !== "Segundo Período Letivo de 2024"){
+                if(state === "postAppend" && row[1]?.includes("DIAS LETIVOS ")){
+                    console.log("includs")
+                    finished = true;
+                    return finalContent;
+                }
                 const result = stateFunctions[state](row, finalContent[finalContent.length - 1])
 
                 if(result){
@@ -206,7 +224,7 @@ function organizeMatrixContent() {
             }
 
         }
-    })
+    }
 
     return finalContent;
 
