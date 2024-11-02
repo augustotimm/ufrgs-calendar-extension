@@ -41,10 +41,10 @@ export class StateMachine {
         }
     }
 
-    restartStateMachine(){
-        this.stateVariables.missingEvent = false;
-        this.stateVariables.missingDate = false;
-        this.stateVariables.postAppend = false;
+    restartStateMachine(entry = false){
+        this.stateVariables.missingEvent = entry;
+        this.stateVariables.missingDate = entry;
+        this.stateVariables.postAppend = entry;
     }
 
     testAndAppend(start, value){
@@ -60,7 +60,7 @@ export class StateMachine {
         lastWord = lastWord? lastWord: "DIAS LETIVOS ";
         const finalContent = []
         let index = 0
-        while(!finished)
+        while(!finished || index < extractedContent.length)
         {
             const row = extractedContent[index]
             index ++;
@@ -90,8 +90,8 @@ export class StateMachine {
 
 
         }
-        this.restartStateMachine();
-        this.state = "pendingString";
+        this.restartStateMachine(true);
+        this.calculateState()
 
         return finalContent;
 
