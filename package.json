@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "test",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -20,8 +21,11 @@
   "dependencies": {
     "ical-generator": "^7.0.0",
     "nodemailer": "^6.9.13",
-    "pdf2table": "^0.0.2",
-    "pdfreader": "^3.0.2"
+    "pdfreader": "^3.0.5"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "@eslint/js": "^9.13.0",
+    "eslint": "^9.13.0"
+  }
 }
