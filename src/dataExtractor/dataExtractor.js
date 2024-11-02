@@ -4,6 +4,7 @@ import {StateMachine} from "./stateMachine.js";
 const tableStarterPhrase = "Primeiro Período Letivo de";
 
 const ignoreString = "Segundo Período Letivo de 2024";
+const defaultPath = "/Users/i752054/Documents/Repos/ufrgs-calendar-extension/files/calendario 24.pdf"
 
 const columnSeparator = (item) => parseFloat(item.x) >= 9;
 
@@ -49,9 +50,9 @@ async function extractMatrixFromPDF(filepath) {
         eventString: string, // event name
     }
 */
-export async function extractDataFromPDF(filepath, firstWord = tableStarterPhrase, lastWord, separator = ignoreString){
-    const extractedContent = await extractMatrixFromPDF(filepath);
+export async function extractDataFromPDF(filepath, firstWord = tableStarterPhrase, lastWord = undefined, separator = ignoreString){
+    const extractedContent = await extractMatrixFromPDF(defaultPath);
     const stateMachine = new StateMachine();
-    return stateMachine.run(extractedContent, firstWord, lastWord, separator);
+    return stateMachine.run(extractedContent, firstWord, undefined, separator);
 
 }

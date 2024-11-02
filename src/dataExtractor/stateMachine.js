@@ -2,7 +2,6 @@ const dateRegexp = new RegExp("(.*\\d{1,2}\\/\\d{1,2}\\/\\d{2,4}$)");
 const incompleteDateRegexp = new RegExp("(.*\\d{1,2}\\/\\d{1,2}\\/\\d{2,4},?.* [a|à]s?($| partir))");
 const specialEventString = new RegExp("^(20\\d\\d\\/\\d{1,2}).$")
 
-
 export class StateMachine {
     state
     stateVariables = {
@@ -58,6 +57,7 @@ export class StateMachine {
 
     run(extractedContent, firstWord, lastWord, semesterSeparator) {
         let finished = false;
+        lastWord = lastWord? lastWord: "DIAS LETIVOS ";
         const finalContent = []
         let index = 0
         while(!finished)
@@ -66,10 +66,10 @@ export class StateMachine {
             index ++;
 
             if(row[0] !== semesterSeparator){
-                if(this.state === "postAppend" && row[1]?.includes("DIAS LETIVOS ")){
-                    finished = true;
-                    return finalContent;
-                }
+                // if(this.state === "postAppend" && row[1]?.includes()){
+                //     finished = true;
+                //     return finalContent;
+                // }
                 const result = this.stateFunctions[this.state](
                     row,
                     finalContent[finalContent.length - 1],
@@ -98,7 +98,11 @@ export class StateMachine {
     }
 
     stateFunctions = {
-        default: (row, lastEntry) => {
+        default: (row, lastEntry, {lastWord}) => {
+            if((row[0] && row[0].includes(lastWord))
+                || (row[1] && row[1].includes(lastWord))) {
+                return false;
+            }
             if(!row[1] && row[0]){
                 if(specialEventString.test(row[0])) {
                     lastEntry.eventString = this.testAndAppend(lastEntry.eventString, row[0]);
@@ -157,9 +161,11 @@ export class StateMachine {
             }
         },
         postAppend: (row, lastEntry, {lastWord}) => {
-            if(row[0] && row[0].includes(lastWord)) {
+            if((row[0] && row[0].includes(lastWord))
+                || (row[1] && row[1].includes(lastWord))) {
                 return false;
             }
+
             if(!row[1] && row[0]){
                 this.stateVariables.postAppend = false;
                 lastEntry.eventString = this.testAndAppend(lastEntry.eventString, row[0]);

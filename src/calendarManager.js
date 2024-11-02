@@ -14,7 +14,7 @@ export const createCalendarFromContents = function(contentsList) {
     calendar.method(ICalCalendarMethod.REQUEST);
 
     contentsList.forEach((element) => {
-        const parsedDate = parseDateString(element)
+        const parsedDate = parseDateString(element);
         if(parsedDate.dates.length > 0) {
             if(parsedDate.continuous){
                 calendar.createEvent({
@@ -30,7 +30,7 @@ export const createCalendarFromContents = function(contentsList) {
                         allDay: true,
                         summary: element.eventString,
                     });
-                })
+                });
             }
 
         }
@@ -42,8 +42,8 @@ export const createCalendarFromContents = function(contentsList) {
             });
         }
 
-    })
+    });
     return calendar;
 
-}
+};
 
