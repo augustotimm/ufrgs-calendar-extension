@@ -1,4 +1,4 @@
-const getDateRegexp = new RegExp("(\\d{1,2})\/(\\d{1,2})\/(\\d{4})", "g");
+const getDateRegexp = new RegExp("(\\d{1,2})\/(\\d{1,2})\/(\\d{2,4})", "g");
 
 
 // const dateRangeRegexp = new RegExp("\\d{1,2}\\/\\d{1,2}\\/\\d{2,4} (a|até) \\d{1,2}\\/\\d{1,2}\\/\\d{2,4}", "i");
@@ -74,7 +74,13 @@ const getDateTimeFromString = function(dateTimeString) {
 }
 const getDateFromString = function(dateString) {
     const dateMatch = [...dateString.matchAll(getDateRegexp)];
-    const startDate = new Date(parseInt(dateMatch[0][3]), parseInt(dateMatch[0][2]), parseInt(dateMatch[0][1]))
+    if(dateMatch.length === 0 ){
+        return;
+    }
+    if(dateMatch[0][3].length === 2) {
+        dateMatch[0][3] = "20" + dateMatch[0][3]
+    }
+    const startDate = new Date(parseInt(dateMatch[0][3]), parseInt(dateMatch[0][2])-1, parseInt(dateMatch[0][1]))
     let endDate = undefined;
     if(dateMatch.length > 1) {
         endDate = new Date(parseInt(dateMatch[1][3]), parseInt(dateMatch[1][2]), parseInt(dateMatch[1][1]))
