@@ -1,6 +1,7 @@
 const dateRegexp = new RegExp("(.*\\d{1,2}\\/\\d{1,2}\\/\\d{2,4}$)");
 const incompleteDateRegexp = new RegExp("(.*\\d{1,2}\\/\\d{1,2}\\/\\d{2,4},?.* [a|à]s?($| partir))");
 const specialEventString = new RegExp("^(20\\d\\d\\/\\d{1,2}).$")
+const specialEventStringFormat2 = new RegExp("\\d{2}\\/\\d{2}\\/\\d{4}\\)\\.?$");
 const defaultLastWord = "PRIMEIRO PERÍODO"
 export class StateMachine {
     END_STRING = "END";
@@ -18,6 +19,14 @@ export class StateMachine {
         missingDate: true,
         missingEvent: true,
         postAppend: true,
+    }
+
+    testSpecialEvent(text) {
+        specialEventString.lastIndex = 0;
+        specialEventStringFormat2.lastIndex = 0;
+        return specialEventString.test(text) 
+            || specialEventStringFormat2.test(text)
+            || text.toLowerCase().includes("portaria")
     }
 
     calculateState() {
@@ -46,9 +55,15 @@ export class StateMachine {
             }
             return;
         }
-        if(this.stateVariables.postAppend && !this.stateVariables.missingDate) {
-            this.state = this.POST_APPEND
-            return;
+        if(this.stateVariables.postAppend) {
+            if(!this.stateVariables.missingDate && this.state === this.MISSING_DATE) {
+                this.state = this.POST_APPEND;
+                return;
+            }
+            if(this.state === this.default) {
+                this.state === this.DEFAULT;
+                return;
+            }
         }
 
         if(
@@ -99,36 +114,42 @@ export class StateMachine {
         lastWord = lastWord? lastWord: defaultLastWord;
         const finalContent = []
         let index = 0
-        while(this.state !== this.END_STRING && index < (extractedContent.length - 1))
-        {
-            const row = extractedContent[index]
-            index ++;
-            if(this.firstEvent) {
-                this.calculatePositions(row)
-                this.firstEvent = false
-            }
+        let pageCount = 0;
+        while(pageCount < extractedContent.length && this.state !== this.END_STRING){
 
-            const containsSeparator = row.reduce((acc, curr ) => acc || curr.toLowerCase().includes(semesterSeparator.toLowerCase()), false);
-
-            if(!containsSeparator || this.state === this.PENDING_STRING){
-                // if(this.state === "postAppend" && row[this.datePosition]?.includes()){
-                //     finished = true;
-                //     return finalContent;
-                // }
-                const result = this.stateFunctions[this.state](
-                    row,
-                    finalContent[finalContent.length - 1],
-                    {firstWord, lastWord},
-                )
-                if(result){
-                    finalContent.push(result);
+            const page = extractedContent[pageCount]
+            index = 0;
+            pageCount ++;
+            while(this.state !== this.END_STRING && index < (page.length ))
+            {
+                const row = page[index]
+                index ++;
+                if(this.firstEvent || (index === 0 && pageCount > 1)) {
+                    this.calculatePositions(row)
+                    this.firstEvent = false
                 }
-            } else {
-                this.restartStateMachine()
-                this.firstEvent = true;
-                console.log("ignore")
+
+                const containsSeparator = row.reduce((acc, curr ) => acc || curr.toLowerCase().includes(semesterSeparator.toLowerCase()), false);
+
+                if(!containsSeparator || this.state === this.PENDING_STRING){
+                    if(row[this.eventPosition]?.includes("AMPLIAÇÃO DE VAGAS")){
+                        console.log("KEEP EYE")
+                    }
+                    const result = this.stateFunctions[this.state](
+                        row,
+                        finalContent[finalContent.length - 1],
+                        {firstWord, lastWord},
+                    )
+                    if(result){
+                        finalContent.push(result);
+                    }
+                } else {
+                    this.restartStateMachine()
+                    this.firstEvent = true;
+                    console.log("ignore")
+                }
+                this.calculateState();
             }
-            this.calculateState();
         }
         this.restartStateMachine(true);
         this.calculateState()
@@ -145,9 +166,9 @@ export class StateMachine {
                 return false;
             }
             if(!row[this.datePosition] && row[this.eventPosition]){
-                if(specialEventString.test(row[this.eventPosition])) {
+                if(this.testSpecialEvent(row[this.eventPosition])) {
                     this.stateVariables.missingDate = false;
-                    this.stateVariables.postAppend = false;
+                    this.stateVariables.postAppend = true;
                     this.stateVariables.missingEvent = false;
                     lastEntry.eventString = this.testAndAppend(lastEntry.eventString, row[this.eventPosition]);
                     return;
@@ -222,17 +243,9 @@ export class StateMachine {
                 return;
 
             }
+            dateRegexp.lastIndex = 0;
             const dateMatch = dateRegexp.test(row[this.datePosition]);
-            const incompleteDate = incompleteDateRegexp.test(row[this.datePosition]);
 
-            if(incompleteDate){
-                this.stateVariables.postAppend = false;
-                this.stateVariables.missingDate = true
-                lastEntry.dateString = this.testAndAppend(lastEntry.dateString, row[this.datePosition]);
-                lastEntry.eventString = this.testAndAppend(lastEntry.eventString, row[this.eventPosition]);
-                return;
-
-            }
             if(dateMatch) {
                 this.stateVariables.postAppend = false;
                 if(!row[this.eventPosition]){
@@ -240,6 +253,7 @@ export class StateMachine {
                     return
                 }
                 else {
+                    this.stateVariables.postAppend = false;
                     return {
                         eventString: row[this.datePosition],
                         dateString: row[this.eventPosition]
@@ -248,6 +262,14 @@ export class StateMachine {
 
             } else{
                 this.stateVariables.postAppend = false;
+                if(row[this.datePosition] && !row[this.eventPosition]){
+                    this.stateVariables.postAppend = false;
+                    this.stateVariables.missingDate = true
+                    return {
+                        eventString: undefined,
+                        dateString: row[this.datePosition]
+                    };
+                }
                 lastEntry.dateString = this.testAndAppend(lastEntry.dateString, row[this.datePosition]);
                 lastEntry.eventString = this.testAndAppend(lastEntry.eventString, row[this.eventPosition]);
             }

@@ -1,6 +1,5 @@
 import { createCalendar } from "./calendarManager.js";
 import {extractDataFromPDF} from "./dataExtractor/dataExtractor.js";import { parseDateString } from "./dateParser.js";
- extractDataFromPDF();
 
 const DESCRIPTION_SIZE = 24
 const eventsFromPDF = await extractDataFromPDF();
@@ -13,6 +12,9 @@ const resultingMatch = [...testString.matchAll(dateHourRangeFormat1)];
 
 const result = eventsFromPDF.map((event) => {
     const resulting = parseDateString(event)
+    if(!resulting){
+        return event.dateString
+    }
     delete resulting.dateString;
     resulting.eventString = event.eventString;
     let summary;

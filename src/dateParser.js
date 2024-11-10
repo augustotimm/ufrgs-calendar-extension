@@ -2,8 +2,9 @@ const getDateRegexp = new RegExp("(\\d{1,2})\/(\\d{1,2})\/(\\d{4})", "g");
 
 
 // const dateRangeRegexp = new RegExp("\\d{1,2}\\/\\d{1,2}\\/\\d{2,4} (a|até) \\d{1,2}\\/\\d{1,2}\\/\\d{2,4}", "i");
-const hourStartRangeRegexp = new RegExp("das (\\d{1,2}h\\d{0,2}) de \\d{1,2}\\/\\d{1,2}\\/\\d{2,4}", "i");
-const hourEndRangeRegexp = new RegExp("às(\\d{1,2}h\\d{0,2}) de \\d{1,2}\\/\\d{1,2}\\/\\d{2,4}", "i");
+// const hourStartRangeRegexp = new RegExp("das (\\d{1,2}h\\d{0,2}) de \\d{1,2}\\/\\d{1,2}\\/\\d{2,4}", "i");
+// const hourEndRangeRegexp = new RegExp("às(\\d{1,2}h\\d{0,2}) de \\d{1,2}\\/\\d{1,2}\\/\\d{2,4}", "i");
+
 const hourRangeSingleDateRegexp = new RegExp("das (\\d{1,2}h\\d{0,2}) às\\s*(\\d{1,2}h\\d{0,2})", "i");
 const concatenatedDaysRegexp = new RegExp(".*(\\d{2}) e (\\d{2}\\/\\d{1,2}\\/\\d{2,4}$)");
 

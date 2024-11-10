@@ -8,7 +8,6 @@ const defaultPath = "/Users/i752054/Documents/Repos/ufrgs-calendar-extension/fil
 let secondRowX = 99;
 let firstRowX = 0;
 let extractX = false;
-
 const columnSeparator = (item) => parseFloat(item.x) >= secondRowX;
 
 const mergeCells = (cells) => (cells || []).map((cell) => cell.text).join("");
@@ -26,6 +25,12 @@ async function extractMatrixFromPDF(filepath, firstWord) {
                 reject(err);
             }
             if(!item) {
+                const formattedMatrix = table.getMatrix().map((matrix) => {
+                    return matrix.map(mergeCells);
+                });
+                if(formattedMatrix.length > 0) {
+                    extractedContent.push(formattedMatrix);
+                }
                 resolve(extractedContent);
                 return;
             }
@@ -35,7 +40,10 @@ async function extractMatrixFromPDF(filepath, firstWord) {
                 const formattedMatrix = table.getMatrix().map((matrix) => {
                     return matrix.map(mergeCells);
                 });
-                extractedContent.push(...formattedMatrix);
+                if(formattedMatrix.length > 0) {
+                    extractedContent.push(formattedMatrix);
+                }
+                
                 item?.page && console.log("PAGE:", item.page);
                 table = new TableParser(); // new/clear table for next page
             } else if (item.text) {
@@ -52,7 +60,12 @@ async function extractMatrixFromPDF(filepath, firstWord) {
                 } else {
                     extractX = item.text.toLowerCase().includes(firstWord.toLowerCase());
                 }
-                table.processItem(item, columnSeparator(item));
+                if(item.text.includes("Documento gerado sob autenticação")) {
+                    console.log("rodapé")
+                }
+                if(item.y < 47){
+                    table.processItem(item, columnSeparator(item));
+                }
             }
 
         });
