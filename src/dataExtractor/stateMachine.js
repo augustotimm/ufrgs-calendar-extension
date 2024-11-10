@@ -3,6 +3,13 @@ const incompleteDateRegexp = new RegExp("(.*\\d{1,2}\\/\\d{1,2}\\/\\d{2,4},?.* [
 const specialEventString = new RegExp("^(20\\d\\d\\/\\d{1,2}).$")
 
 export class StateMachine {
+    END_STRING = "END";
+    PENDING_STRING = "pendingString";
+    MISSING_STRING = "missingEvent";
+    DEFAULT = "default";
+    POST_APPEND = "postAppend";
+    MISSING_DATE = "missingDate";
+
     state
     stateVariables = {
         missingDate: false,
@@ -16,18 +23,28 @@ export class StateMachine {
             && this.stateVariables.missingDate
             && this.stateVariables.postAppend
         ) {
-            this.state = "pendingString"
+            if(this.state === this.PENDING_STRING) {
+                this.state = this.PENDING_STRING
+                return;
+            }
+            this.state = this.END_STRING;
+            return;
+
         }
         if(this.stateVariables.missingEvent) {
-            this.state = "missingEvent"
+            this.state = this.MISSING_STRING
             return
         }
         if(this.stateVariables.missingDate) {
-            this.state = "missingDate"
+            if(this.state === this.POST_APPEND) {
+                this.state = this.DEFAULT
+            } else {
+                this.state = this.MISSING_DATE
+            }
             return;
         }
         if(this.stateVariables.postAppend && !this.stateVariables.missingDate) {
-            this.state = "postAppend"
+            this.state = this.POST_APPEND
             return;
         }
 
@@ -36,7 +53,7 @@ export class StateMachine {
             && !this.stateVariables.missingDate
             && !this.stateVariables.postAppend
         ) {
-            this.state = "default"
+            this.state = this.DEFAULT
             return;
         }
     }
@@ -56,13 +73,13 @@ export class StateMachine {
     }
 
     run(extractedContent, firstWord, lastWord, semesterSeparator) {
-        let finished = false;
         lastWord = lastWord? lastWord: "DIAS LETIVOS ";
         const finalContent = []
         let index = 0
-        while(!finished || index < extractedContent.length)
+        while(this.state !== this.END_STRING && index < (extractedContent.length - 1))
         {
             const row = extractedContent[index]
+            row[0]
             index ++;
 
             if(row[0] !== semesterSeparator){
@@ -78,17 +95,11 @@ export class StateMachine {
                 if(result){
                     finalContent.push(result);
                 }
-                if(result === false) {
-                    finished = true;
-                } else
-
-                this.calculateState()
             } else {
                 this.restartStateMachine()
                 console.log("ignore")
             }
-
-
+            this.calculateState();
         }
         this.restartStateMachine(true);
         this.calculateState()
@@ -101,13 +112,20 @@ export class StateMachine {
         default: (row, lastEntry, {lastWord}) => {
             if((row[0] && row[0].includes(lastWord))
                 || (row[1] && row[1].includes(lastWord))) {
+                this.restartStateMachine(true);
                 return false;
             }
             if(!row[1] && row[0]){
                 if(specialEventString.test(row[0])) {
+                    this.stateVariables.missingDate = false;
+                    this.stateVariables.postAppend = false;
+                    this.stateVariables.missingEvent = false;
                     lastEntry.eventString = this.testAndAppend(lastEntry.eventString, row[0]);
+                    return;
                 }
                 else{
+                    this.stateVariables.postAppend = false;
+                    this.stateVariables.missingEvent = false;
                     this.stateVariables.missingDate = true;
                     return {
                         eventString: row[0],
@@ -128,7 +146,8 @@ export class StateMachine {
             }
 
             if(dateMatch) {
-
+                this.stateVariables.missingDate = false;
+                this.stateVariables.postAppend = false;
                 this.stateVariables.missingEvent = !row[0];
 
                 return {
@@ -163,6 +182,7 @@ export class StateMachine {
         postAppend: (row, lastEntry, {lastWord}) => {
             if((row[0] && row[0].includes(lastWord))
                 || (row[1] && row[1].includes(lastWord))) {
+                this.restartStateMachine(true);
                 return false;
             }
 
@@ -178,8 +198,10 @@ export class StateMachine {
 
             if(incompleteDate){
                 this.stateVariables.postAppend = false;
+                this.stateVariables.missingDate = true
                 lastEntry.dateString = this.testAndAppend(lastEntry.dateString, row[1]);
                 lastEntry.eventString = this.testAndAppend(lastEntry.eventString, row[0]);
+                return;
 
             }
             if(dateMatch) {
