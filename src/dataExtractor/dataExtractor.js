@@ -3,16 +3,19 @@ import {StateMachine} from "./stateMachine.js";
 
 const tableStarterPhrase = "Primeiro Período Letivo de";
 
-const ignoreString = "Segundo Período Letivo de 2024";
-const defaultPath = "/Users/i752054/Documents/Repos/ufrgs-calendar-extension/files/calendario 24.pdf"
+const ignoreString = "Segundo Período letivo de";
+const defaultPath = "/Users/i752054/Documents/Repos/ufrgs-calendar-extension/files/portaria.pdf"
+let secondRowX = 99;
+let firstRowX = 0;
+let extractX = false;
 
-const columnSeparator = (item) => parseFloat(item.x) >= 9;
+const columnSeparator = (item) => parseFloat(item.x) >= secondRowX;
 
 const mergeCells = (cells) => (cells || []).map((cell) => cell.text).join("");
 
 
 
-async function extractMatrixFromPDF(filepath) {
+async function extractMatrixFromPDF(filepath, firstWord) {
     const extractedContent = [];
     var table = new TableParser();
     const pdfReader = new PdfReader();
@@ -37,6 +40,18 @@ async function extractMatrixFromPDF(filepath) {
                 table = new TableParser(); // new/clear table for next page
             } else if (item.text) {
                 // accumulate text items into rows object, per line
+                if(extractX) {
+                    if(firstRowX < item.x) {
+                        if(firstRowX === 0) {
+                            firstRowX = Math.ceil(item.x)
+                        } else {
+                            secondRowX = Math.floor(item.x)
+                            extractX = false;
+                        }
+                    }
+                } else {
+                    extractX = item.text.toLowerCase().includes(firstWord.toLowerCase());
+                }
                 table.processItem(item, columnSeparator(item));
             }
 
@@ -51,7 +66,7 @@ async function extractMatrixFromPDF(filepath) {
     }
 */
 export async function extractDataFromPDF(filepath, firstWord = tableStarterPhrase, lastWord = undefined, separator = ignoreString){
-    const extractedContent = await extractMatrixFromPDF(defaultPath);
+    const extractedContent = await extractMatrixFromPDF(defaultPath, firstWord);
     const stateMachine = new StateMachine();
     return stateMachine.run(extractedContent, firstWord, undefined, separator);
 

@@ -1,7 +1,7 @@
 const dateRegexp = new RegExp("(.*\\d{1,2}\\/\\d{1,2}\\/\\d{2,4}$)");
 const incompleteDateRegexp = new RegExp("(.*\\d{1,2}\\/\\d{1,2}\\/\\d{2,4},?.* [a|à]s?($| partir))");
 const specialEventString = new RegExp("^(20\\d\\d\\/\\d{1,2}).$")
-
+const defaultLastWord = "PRIMEIRO PERÍODO"
 export class StateMachine {
     END_STRING = "END";
     PENDING_STRING = "pendingString";
@@ -9,12 +9,15 @@ export class StateMachine {
     DEFAULT = "default";
     POST_APPEND = "postAppend";
     MISSING_DATE = "missingDate";
+    eventPosition = 0;
+    datePosition = 1;
+    firstEvent = false;
 
     state
     stateVariables = {
-        missingDate: false,
-        missingEvent: false,
-        postAppend: false,
+        missingDate: true,
+        missingEvent: true,
+        postAppend: true,
     }
 
     calculateState() {
@@ -72,18 +75,43 @@ export class StateMachine {
         }
     }
 
+    calculatePositions(row) {
+        if(row[0]) {
+            if(dateRegexp.test(row[0])) {
+               this.eventPosition = 1;
+               this.datePosition = 0;
+            } else {
+               this.eventPosition = 0;
+               this.datePosition = 1;
+            }
+       } else {
+           if(dateRegexp.test(row[1])) {
+               this.eventPosition = 0;
+               this.datePosition = 1;
+            } else {
+               this.eventPosition = 1;
+               this.datePosition = 0;
+            }
+       }
+    }
+
     run(extractedContent, firstWord, lastWord, semesterSeparator) {
-        lastWord = lastWord? lastWord: "DIAS LETIVOS ";
+        lastWord = lastWord? lastWord: defaultLastWord;
         const finalContent = []
         let index = 0
         while(this.state !== this.END_STRING && index < (extractedContent.length - 1))
         {
             const row = extractedContent[index]
-            row[0]
             index ++;
+            if(this.firstEvent) {
+                this.calculatePositions(row)
+                this.firstEvent = false
+            }
 
-            if(row[0] !== semesterSeparator){
-                // if(this.state === "postAppend" && row[1]?.includes()){
+            const containsSeparator = row.reduce((acc, curr ) => acc || curr.toLowerCase().includes(semesterSeparator.toLowerCase()), false);
+
+            if(!containsSeparator || this.state === this.PENDING_STRING){
+                // if(this.state === "postAppend" && row[this.datePosition]?.includes()){
                 //     finished = true;
                 //     return finalContent;
                 // }
@@ -97,6 +125,7 @@ export class StateMachine {
                 }
             } else {
                 this.restartStateMachine()
+                this.firstEvent = true;
                 console.log("ignore")
             }
             this.calculateState();
@@ -110,17 +139,17 @@ export class StateMachine {
 
     stateFunctions = {
         default: (row, lastEntry, {lastWord}) => {
-            if((row[0] && row[0].includes(lastWord))
-                || (row[1] && row[1].includes(lastWord))) {
+            if((row[this.eventPosition] && row[this.eventPosition].includes(lastWord))
+                || (row[this.datePosition] && row[this.datePosition].includes(lastWord))) {
                 this.restartStateMachine(true);
                 return false;
             }
-            if(!row[1] && row[0]){
-                if(specialEventString.test(row[0])) {
+            if(!row[this.datePosition] && row[this.eventPosition]){
+                if(specialEventString.test(row[this.eventPosition])) {
                     this.stateVariables.missingDate = false;
                     this.stateVariables.postAppend = false;
                     this.stateVariables.missingEvent = false;
-                    lastEntry.eventString = this.testAndAppend(lastEntry.eventString, row[0]);
+                    lastEntry.eventString = this.testAndAppend(lastEntry.eventString, row[this.eventPosition]);
                     return;
                 }
                 else{
@@ -128,105 +157,106 @@ export class StateMachine {
                     this.stateVariables.missingEvent = false;
                     this.stateVariables.missingDate = true;
                     return {
-                        eventString: row[0],
+                        eventString: row[this.eventPosition],
                     };
                 }
             }
-            const dateMatch = dateRegexp.test(row[1]);
-            const incompleteDate = incompleteDateRegexp.test(row[1]);
+            const dateMatch = dateRegexp.test(row[this.datePosition]);
+            const incompleteDate = incompleteDateRegexp.test(row[this.datePosition]);
 
             if(incompleteDate){
                 this.stateVariables.missingDate = true
-                this.stateVariables.missingEvent = !row[0];
+                this.stateVariables.missingEvent = !row[this.eventPosition];
 
                 return {
-                    eventString: row[0],
-                    dateString: row[1]
+                    eventString: row[this.eventPosition],
+                    dateString: row[this.datePosition]
                 };
             }
 
             if(dateMatch) {
                 this.stateVariables.missingDate = false;
                 this.stateVariables.postAppend = false;
-                this.stateVariables.missingEvent = !row[0];
+                this.stateVariables.missingEvent = !row[this.eventPosition];
 
                 return {
-                    eventString: row[0],
-                    dateString: row[1]
+                    eventString: row[this.eventPosition],
+                    dateString: row[this.datePosition]
                 };
             }
         },
 
         missingEvent: (row, lastEntry) => {
-            if(row[0]) {
+            if(row[this.eventPosition]) {
                 this.stateVariables.missingEvent = false;
-                lastEntry.eventString = row[0];
+                lastEntry.eventString = row[this.eventPosition];
             }
-            if(row[1]) {
-                lastEntry.dateString = this.testAndAppend(lastEntry.dateString, row[1]);
+            if(row[this.datePosition]) {
+                lastEntry.dateString = this.testAndAppend(lastEntry.dateString, row[this.datePosition]);
             }
         },
         missingDate: (row, lastEntry) => {
-            if(row[0]) {
-                lastEntry.eventString = this.testAndAppend(lastEntry.eventString, row[0]);
+            if(row[this.eventPosition]) {
+                lastEntry.eventString = this.testAndAppend(lastEntry.eventString, row[this.eventPosition]);
             }
-            if(row[1]) {
+            if(row[this.datePosition]) {
 
                 this.stateVariables.postAppend = true
-                this.stateVariables.missingDate = incompleteDateRegexp.test(row[1]);
+                this.stateVariables.missingDate = incompleteDateRegexp.test(row[this.datePosition]);
 
 
-                lastEntry.dateString = this.testAndAppend(lastEntry.dateString, row[1]);
+                lastEntry.dateString = this.testAndAppend(lastEntry.dateString, row[this.datePosition]);
             }
         },
         postAppend: (row, lastEntry, {lastWord}) => {
-            if((row[0] && row[0].includes(lastWord))
-                || (row[1] && row[1].includes(lastWord))) {
+            if((row[this.eventPosition] && row[this.eventPosition].includes(lastWord))
+                || (row[this.datePosition] && row[this.datePosition].includes(lastWord))) {
                 this.restartStateMachine(true);
                 return false;
             }
 
-            if(!row[1] && row[0]){
+            if(!row[this.datePosition] && row[this.eventPosition]){
                 this.stateVariables.postAppend = false;
-                lastEntry.eventString = this.testAndAppend(lastEntry.eventString, row[0]);
+                lastEntry.eventString = this.testAndAppend(lastEntry.eventString, row[this.eventPosition]);
 
                 return;
 
             }
-            const dateMatch = dateRegexp.test(row[1]);
-            const incompleteDate = incompleteDateRegexp.test(row[1]);
+            const dateMatch = dateRegexp.test(row[this.datePosition]);
+            const incompleteDate = incompleteDateRegexp.test(row[this.datePosition]);
 
             if(incompleteDate){
                 this.stateVariables.postAppend = false;
                 this.stateVariables.missingDate = true
-                lastEntry.dateString = this.testAndAppend(lastEntry.dateString, row[1]);
-                lastEntry.eventString = this.testAndAppend(lastEntry.eventString, row[0]);
+                lastEntry.dateString = this.testAndAppend(lastEntry.dateString, row[this.datePosition]);
+                lastEntry.eventString = this.testAndAppend(lastEntry.eventString, row[this.eventPosition]);
                 return;
 
             }
             if(dateMatch) {
                 this.stateVariables.postAppend = false;
-                if(!row[0]){
-                    lastEntry.dateString = row[1]
+                if(!row[this.eventPosition]){
+                    lastEntry.dateString = row[this.datePosition]
                     return
                 }
                 else {
                     return {
-                        eventString: row[1],
-                        dateString: row[0]
+                        eventString: row[this.datePosition],
+                        dateString: row[this.eventPosition]
                     };
                 }
 
             } else{
                 this.stateVariables.postAppend = false;
-                lastEntry.dateString = this.testAndAppend(lastEntry.dateString, row[1]);
-                lastEntry.eventString = this.testAndAppend(lastEntry.eventString, row[0]);
+                lastEntry.dateString = this.testAndAppend(lastEntry.dateString, row[this.datePosition]);
+                lastEntry.eventString = this.testAndAppend(lastEntry.eventString, row[this.eventPosition]);
             }
         },
         pendingString: (row, lastEntry, {firstWord}) => {
-            const startedUsefulTable = row.reduce((acc, curr ) => acc || curr.includes(firstWord), false);
+            const startedUsefulTable = row.reduce((acc, curr ) => acc || curr.toLowerCase().includes(firstWord.toLowerCase()), false);
             if(startedUsefulTable) {
                 this.restartStateMachine()
+                this.firstEvent = true;
             }
         }
     }
