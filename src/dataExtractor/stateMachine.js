@@ -1,4 +1,4 @@
-const dateRegexp = new RegExp("(.*\\d{1,2}\\/\\d{1,2}\\/\\d{2,4}$)");
+const dateRegexp = new RegExp("(\\d{1,2})\/(\\d{1,2})\/(\\d{4})");
 const incompleteDateRegexp = new RegExp("(.*\\d{1,2}\\/\\d{1,2}\\/\\d{2,4},?.* [a|à]s?($| partir))");
 const specialEventString = new RegExp("^(20\\d\\d\\/\\d{1,2}).$")
 const specialEventStringFormat2 = new RegExp("\\d{2}\\/\\d{2}\\/\\d{4}\\)\\.?$");
@@ -123,16 +123,17 @@ export class StateMachine {
             while(this.state !== this.END_STRING && index < (page.length ))
             {
                 const row = page[index]
-                index ++;
+                
                 if(this.firstEvent || (index === 0 && pageCount > 1)) {
                     this.calculatePositions(row)
                     this.firstEvent = false
                 }
+                index ++;
 
                 const containsSeparator = row.reduce((acc, curr ) => acc || curr.toLowerCase().includes(semesterSeparator.toLowerCase()), false);
 
                 if(!containsSeparator || this.state === this.PENDING_STRING){
-                    if(row[this.eventPosition]?.includes("AMPLIAÇÃO DE VAGAS")){
+                    if(row[this.eventPosition]?.includes("07/11/2022")){
                         console.log("KEEP EYE")
                     }
                     const result = this.stateFunctions[this.state](
@@ -255,8 +256,8 @@ export class StateMachine {
                 else {
                     this.stateVariables.postAppend = false;
                     return {
-                        eventString: row[this.datePosition],
-                        dateString: row[this.eventPosition]
+                        eventString: row[this.eventPosition],
+                        dateString: row[this.datePosition]
                     };
                 }
 
