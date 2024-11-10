@@ -3,7 +3,7 @@ import { parseDateString } from "./dateParser.js";
 
 
 
-export const createCalendarFromContents = function(contentsList) {
+export const createCalendar = function(contentsList) {
     const calendar = ical({
         name: 'Exported UFRGS Calendar',
         prodId: {company: 'UFRGS student work', product: 'calendar export'},
@@ -14,34 +14,22 @@ export const createCalendarFromContents = function(contentsList) {
     calendar.method(ICalCalendarMethod.REQUEST);
 
     contentsList.forEach((element) => {
-        const parsedDate = parseDateString(element);
-        if(parsedDate.dates.length > 0) {
-            if(parsedDate.continuous){
-                calendar.createEvent({
-                    start: parsedDate.dates[0],
-                    end: parsedDate[parsedDate.dates.length - 1],
-                    summary: element.eventString,
-                });
-            }
-            else {
-                parsedDate.dates.forEach(date => {
-                    calendar.createEvent({
-                        start: date,
-                        allDay: true,
-                        summary: element.eventString,
-                    });
-                });
-            }
 
-        }
-        else {
+        if(element.endDate) {
             calendar.createEvent({
-                start: parsedDate.dates[0],
-                allDay: true,
-                summary: element.eventString,
+                start: element.startDate,
+                end: element.startEnd,
+                summary: element.summary,
+                description: element.eventString
+            });
+        } else {
+            calendar.createEvent({
+                start: element.startDate,
+                summary: element.summary,
+                description: element.eventString
             });
         }
-
+        
     });
     return calendar;
 
