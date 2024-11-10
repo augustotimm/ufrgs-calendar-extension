@@ -54,6 +54,20 @@ const getdatesFromDateTimeRangeFromString = function(dateTimeRangeString) {
         resultingDAte.endDate = new Date(parseInt(splitEndDate[2]), parseInt(splitEndDate[1]), parseInt(splitEndDate[0]), parseInt(dateMatchArray[3]), parseInt(dateMatchArray[4]))
 
         return resultingDAte;
+    } else {
+        const hours = getHoursString(dateTimeRangeString);
+        const dateMatch = [...dateTimeRangeString.matchAll(getDateRegexp)];
+        const startDate = new Date(parseInt(dateMatch[0][3]), parseInt(dateMatch[0][2]), parseInt(dateMatch[0][1]), hours[0].hours, hours[0].minutes);
+        let endDate = undefined;
+        if(hours.length > 1) {
+            endDate = new Date(parseInt(dateMatch[1][3]), parseInt(dateMatch[1][2]), parseInt(dateMatch[1][1]), hours[1].hours, hours[1].minutes);
+        } else {
+            endDate = new Date(parseInt(dateMatch[1][3]), parseInt(dateMatch[1][2]), parseInt(dateMatch[1][1]));
+        }
+        return {
+            startDate,
+            endDate
+        }
     }
 }
 
