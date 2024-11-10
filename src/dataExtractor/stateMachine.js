@@ -2,7 +2,11 @@ const dateRegexp = new RegExp("(\\d{1,2})\/(\\d{1,2})\/(\\d{4})");
 const incompleteDateRegexp = new RegExp("(.*\\d{1,2}\\/\\d{1,2}\\/\\d{2,4},?.* [a|à]s?($| partir))");
 const specialEventString = new RegExp("^(20\\d\\d\\/\\d{1,2}).$")
 const specialEventStringFormat2 = new RegExp("\\d{2}\\/\\d{2}\\/\\d{4}\\)\\.?$");
-const defaultLastWord = "PRIMEIRO PERÍODO"
+
+const startEvent = new RegExp("^([A-Z]{2})");
+
+const defaultLastWord = "CINTIA INES"
+
 export class StateMachine {
     END_STRING = "END";
     PENDING_STRING = "pendingString";
@@ -48,11 +52,7 @@ export class StateMachine {
             return
         }
         if(this.stateVariables.missingDate) {
-            if(this.state === this.POST_APPEND) {
-                this.state = this.DEFAULT
-            } else {
-                this.state = this.MISSING_DATE
-            }
+            this.state = this.MISSING_DATE
             return;
         }
         if(this.stateVariables.postAppend) {
@@ -133,7 +133,7 @@ export class StateMachine {
                 const containsSeparator = row.reduce((acc, curr ) => acc || curr.toLowerCase().includes(semesterSeparator.toLowerCase()), false);
 
                 if(!containsSeparator || this.state === this.PENDING_STRING){
-                    if(row[this.eventPosition]?.includes("07/11/2022")){
+                    if(row[this.datePosition]?.includes("das 14h às 18h de")){
                         console.log("KEEP EYE")
                     }
                     const result = this.stateFunctions[this.state](
@@ -238,9 +238,19 @@ export class StateMachine {
             }
 
             if(!row[this.datePosition] && row[this.eventPosition]){
+                if(this.testSpecialEvent(row[this.eventPosition])){
+                    lastEntry.eventString = this.testAndAppend(lastEntry.eventString, row[this.eventPosition]);    
+                }
                 this.stateVariables.postAppend = false;
+                if(startEvent.test(row[this.eventPosition])){
+                    this.stateVariables.missingDate = true;
+                    return {
+                        eventString: row[this.eventPosition],
+                        dateString: undefined
+                    }
+                }
                 lastEntry.eventString = this.testAndAppend(lastEntry.eventString, row[this.eventPosition]);
-
+            
                 return;
 
             }
