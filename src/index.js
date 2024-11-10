@@ -25,5 +25,6 @@ const result = eventsFromPDF.map((event) => {
 })
 
 const calendar = createCalendar(result);
+fs.writeFileSync('invitation.ics', calendar.toString());
 
 console.log(result);
