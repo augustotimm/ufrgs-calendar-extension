@@ -2,23 +2,28 @@
 
 <div class="body-container-wrapper">
   <div class="body-container">
-    <div class="page-center">
-      <div class="row">
-        <span>
-          <input class="balloon" id="state" type="text" placeholder="Primeiro Período Letivo de 2024" /><label for="state">Primeira frase do calendário</label>
-        </span>
-        <span>
-          <input class="balloon" id="planet" type="text" placeholder="Segundo Período letivo de" /><label for="planet">Separador de semestre</label>
-        </span>
-        <span>
-          <input class="balloon" id="galaxy" type="text" placeholder="Dias Letivos na Graduação" /><label for="galaxy">Primeira palavra após a tabela</label>
-        </span>
-      </div>
-      
-      
+    <div class="row">
+      <span>
+        <input class="balloon" id="firstWordText" type="text" placeholder="Primeiro Período Letivo de 2024" /><label for="firstWordText">Primeira frase do calendário</label>
+      </span>
+      <span>
+        <input class="balloon" id="separatorText" type="text" placeholder="Segundo Período letivo de" /><label for="separatorText">Separador de semestre</label>
+      </span>
+      <span>
+        <input class="balloon" id="lastWordText" type="text" placeholder="Dias Letivos na Graduação" /><label for="lastWordText">Primeira palavra após a tabela</label>
+      </span>
+    </div>
+    <div class="row">
+      <span>
+        <label for="filePathText">Arquivo:</label> <input id="filePathText" type="text" disabled="disabled"/>
+      </span>
+    </div>
+    
+    <div class="row">
       <i class="fa fa-cloud" aria-hidden="true"></i>
-      <h1>Abra o arquivo de <strong>Calendário</strong> da UFRGS</h1>
+      <h3>Abra o arquivo de <strong>Calendário</strong> da UFRGS</h3>
       <a class="upload" id="openBtn"><span>Abrir arquivo</span></a>
+      <a class="upload" id="startButton"><span>Exportar Calendário</span></a>
     </div>
   </div>
   <link rel="stylesheet" href="style.css" />

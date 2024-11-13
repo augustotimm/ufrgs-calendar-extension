@@ -1,9 +1,10 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron/main')
 const path = require('node:path')
 const fs = require("fs");
+let win;
 
 function createWindow() {
-  let win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
@@ -11,7 +12,7 @@ function createWindow() {
       contextIsolation: false,
     },
   });
-  win.webContents.openDevTools();
+  win.webContents.openDevTools()
   win.loadFile("index.html");
 }
 
@@ -30,8 +31,8 @@ ipcMain.on("open-file-dialog", (event) => {
       if (!result.canceled) {
         const filePath = result.filePaths[0];
         const fileContent = fs.readFileSync(filePath, "utf-8");
-        ipcRenderer.send("get-file", fileContent);
-        event.reply("open-file", filePath, fileContent);
+        // ipcRenderer.send("file-updated", filePath);
+        win.webContents.send("file-updated", filePath);
       }
     })
     .catch((err) => {
