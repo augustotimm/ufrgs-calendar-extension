@@ -1,75 +1,32 @@
-import { PdfReader, Rule} from "pdfreader";
-import { parseDateString } from "./dateParser.js";
-const content = [];
+import { createCalendar } from "./calendarManager.js";
+import {extractDataFromPDF} from "./dataExtractor/dataExtractor.js";import { parseDateString } from "./dateParser.js";
 
-const dateRegexp = new RegExp("(.*\\d{1,2}\\/\\d{1,2}\\/\\d{2,4}$)");
-const incompleteDateRegexp = new RegExp("(.*\\d{1,2}\\/\\d{1,2}\\/\\d{2,4} [a|à]s*)");
+const DESCRIPTION_SIZE = 24
+const eventsFromPDF = await extractDataFromPDF();
+const testString = "05/03/2024, a partir das 9h, a 06/03/2024 às 23h59min";
+const getDateRegexp = new RegExp("(\\d{1,2})\/(\\d{1,2})\/(\\d{4})", "g");
+const dateHourRangeFormat1 = new RegExp("(\\d{1,2}\/\\d{1,2}\/\\d{2,4}), a partir das ([0-2]?[0-9])h, a[s]? (\\d{1,2}\/\\d{1,2}\/\\d{2,4}) [à|a][s]? ([0-2]?[0-9])h([0-5]?[0-9]?)", "gi")
+import fs from "fs"
+const resultingMatch = [...testString.matchAll(dateHourRangeFormat1)];
 
-const contentType = {
-    DATE_HEAD: "dateHead",
-    DATE_APPENDIX: "dateAppendix",
-    EVENT: "event"
-}
 
-const addParsedContent = function (text, type) {
-    switch (type) {
-        case contentType.DATE_APPENDIX:
-            content[content.length - 1].dateString += text;
-            return;
-        case contentType.DATE_HEAD:
-            content.push({dateString: text, eventString: ""});
-            return;
-        case contentType.EVENT:
-            content[content.length - 1].eventString += text;
-            return;
-        default:
-            console.log("add parsed content type error");
-            break;
+const result = eventsFromPDF.map((event) => {
+    const resulting = parseDateString(event)
+    if(!resulting){
+        return event.dateString
     }
-}
-
-
-const res = new Promise((resolve, reject) => {
-    const rules = [
-        Rule.on(/^PRIMEIRO PERÍODO LETIVO DE 2022 \(2022\/1\)$/)
-            .parseTable(3)
-            .then((table) => {
-                    let dateAppendix = false;
-
-                    table.items.map(function (element) {
-                        const dateMatch = dateRegexp.test(element.text);
-
-                        if (incompleteDateRegexp.test(element.text) && !dateMatch) {
-                            dateAppendix = true;
-                            addParsedContent(element.text, contentType.DATE_HEAD);
-                            return;
-                        }
-
-                        if (dateMatch && dateAppendix) {
-                            dateAppendix = false;
-                            addParsedContent(element.text, contentType.DATE_APPENDIX);
-                            return;
-                        }
-                        if(dateMatch) {
-                            addParsedContent(element.text, contentType.DATE_HEAD);
-                            return;
-                        }
-
-                        content[content.length - 1].eventString += element.text;
-                        return;
-                    })
-                }
-            ),
-    ]
-    const processItem = Rule.makeItemProcessor(rules);
-    new PdfReader().parseFileItems("/home/augusto/repos/ufrgs-calendar-extension/files/portaria.pdf", (err, item) => {
-        if (err) reject(err);
-        else {
-            processItem(item);
-            if (!item) resolve(content);
-        }
-    });
+    delete resulting.dateString;
+    resulting.eventString = event.eventString;
+    let summary;
+    const splitString = event.eventString.split(":");
+    if(splitString.length === 1) {
+        summary = event.eventString.slice(0, DESCRIPTION_SIZE);
+    }
+    resulting.summary = summary;
+    return  resulting;
 })
-await res;
-const parsedDates = content.map(parseDateString)
-console.log(parsedDates)
+
+const calendar = createCalendar(result);
+fs.writeFileSync('invitation.ics', calendar.toString());
+
+console.log(result);
