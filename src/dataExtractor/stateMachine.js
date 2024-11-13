@@ -34,46 +34,119 @@ export class StateMachine {
     }
 
     calculateState() {
-        if(
-            this.stateVariables.missingEvent
-            && this.stateVariables.missingDate
-            && this.stateVariables.postAppend
-        ) {
-            if(this.state === this.PENDING_STRING) {
-                this.state = this.PENDING_STRING
-                return;
-            }
-            this.state = this.END_STRING;
-            return;
+        switch(this.state){
+            case this.PENDING_STRING:
+                if(
+                    !this.stateVariables.missingEvent
+                    && !this.stateVariables.missingDate
+                    && !this.stateVariables.postAppend
+                ) {
+                    this.state = this.DEFAULT
+                    return;
+                }
+                if(
+                    this.stateVariables.missingEvent
+                    && this.stateVariables.missingDate
+                    && this.stateVariables.postAppend
+                ) {
+                    this.state = this.PENDING_STRING
+                    return;
+                }
+                break;
+            
+            case this.MISSING_DATE:
+                if(this.stateVariables.missingDate) {
+                    this.state = this.MISSING_DATE
+                    return;
+                }
+                if(this.stateVariables.postAppend) {
+                    if(!this.stateVariables.missingDate ) {
+                        this.state = this.POST_APPEND;
+                        return;
+                    }
+                }
+                break;
+            
+            case this.MISSING_STRING:
+                if(
+                    !this.stateVariables.missingEvent
+                    && !this.stateVariables.missingDate
+                    && !this.stateVariables.postAppend
+                ) {
+                    this.state = this.DEFAULT
+                    return;
+                }
+                if(this.stateVariables.missingEvent){
+                    this.state = this.MISSING_STRING
+                    return;
+                }
+                
+                break;
+            case this.POST_APPEND:
+                if(
+                    this.stateVariables.missingEvent
+                    && this.stateVariables.missingDate
+                    && this.stateVariables.postAppend
+                ) {
+                    if(this.state === this.PENDING_STRING) {
+                        this.state = this.PENDING_STRING
+                        return;
+                    }
+                    this.state = this.END_STRING;
+                    return;
+        
+                }
+                if(
+                    !this.stateVariables.missingEvent
+                    && !this.stateVariables.missingDate
+                    && !this.stateVariables.postAppend
+                ) {
+                    this.state = this.DEFAULT
+                    return;
+                }
+                if(this.stateVariables.missingDate) {
+                    this.state = this.MISSING_DATE
+                    return;
+                }
+                break;
 
-        }
-        if(this.stateVariables.missingEvent) {
-            this.state = this.MISSING_STRING
-            return
-        }
-        if(this.stateVariables.missingDate) {
-            this.state = this.MISSING_DATE
-            return;
-        }
-        if(this.stateVariables.postAppend) {
-            if(!this.stateVariables.missingDate && this.state === this.MISSING_DATE) {
-                this.state = this.POST_APPEND;
-                return;
-            }
-            if(this.state === this.default) {
-                this.state === this.DEFAULT;
-                return;
-            }
-        }
+            case this.DEFAULT:
+                if(
+                    this.stateVariables.missingEvent
+                    && this.stateVariables.missingDate
+                    && this.stateVariables.postAppend
+                ) {
+                    
+                    this.state = this.END_STRING;
+                    return;
+        
+                }
+                if(this.stateVariables.missingEvent) {
+                    this.state = this.MISSING_STRING
+                    return
+                }
+                if(this.stateVariables.missingDate) {
+                    this.state = this.MISSING_DATE
+                    return;
+                }
+                if(this.stateVariables.postAppend && !this.missingDate) {
+                    this.state = this.MISSING_DATE
+                    return;
+                }
 
-        if(
-            !this.stateVariables.missingEvent
-            && !this.stateVariables.missingDate
-            && !this.stateVariables.postAppend
-        ) {
-            this.state = this.DEFAULT
-            return;
+                if(
+                    !this.stateVariables.missingEvent
+                    && !this.stateVariables.missingDate
+                    && !this.stateVariables.postAppend
+                ) {
+                    this.state = this.DEFAULT
+                    return;
+                }
+                break;
         }
+        console.log("State not calculated");
+
+        
     }
 
     restartStateMachine(entry = false){
@@ -211,7 +284,14 @@ export class StateMachine {
         missingEvent: (row, lastEntry) => {
             if(row[this.eventPosition]) {
                 this.stateVariables.missingEvent = false;
+                this.stateVariables.postAppend = false;
+                this.stateVariables.missingDate = false;
+
                 lastEntry.eventString = row[this.eventPosition];
+                
+            }
+            else{
+                this.stateVariables.missingEvent = true;
             }
             if(row[this.datePosition]) {
                 lastEntry.dateString = this.testAndAppend(lastEntry.dateString, row[this.datePosition]);
@@ -239,11 +319,17 @@ export class StateMachine {
 
             if(!row[this.datePosition] && row[this.eventPosition]){
                 if(this.testSpecialEvent(row[this.eventPosition])){
+                    this.stateVariables.postAppend = true;
+                    this.stateVariables.missingDate = false;
+                    this.stateVariables.missingEvent = false; 
+
+
                     lastEntry.eventString = this.testAndAppend(lastEntry.eventString, row[this.eventPosition]);    
                 }
-                this.stateVariables.postAppend = false;
                 if(startEvent.test(row[this.eventPosition])){
+                    this.stateVariables.postAppend = false;
                     this.stateVariables.missingDate = true;
+                    this.stateVariables.missingEvent = false; 
                     return {
                         eventString: row[this.eventPosition],
                         dateString: undefined
@@ -258,8 +344,10 @@ export class StateMachine {
             const dateMatch = dateRegexp.test(row[this.datePosition]);
 
             if(dateMatch) {
-                this.stateVariables.postAppend = false;
+                this.stateVariables.missingDate = false;
+                this.stateVariables.missingEvent = false;                 
                 if(!row[this.eventPosition]){
+                    this.stateVariables.postAppend = true;
                     lastEntry.dateString = row[this.datePosition]
                     return
                 }
@@ -272,15 +360,18 @@ export class StateMachine {
                 }
 
             } else{
-                this.stateVariables.postAppend = false;
                 if(row[this.datePosition] && !row[this.eventPosition]){
                     this.stateVariables.postAppend = false;
                     this.stateVariables.missingDate = true
+                    this.stateVariables.postAppend = false;
                     return {
                         eventString: undefined,
                         dateString: row[this.datePosition]
                     };
                 }
+                this.stateVariables.postAppend = false;
+                this.stateVariables.missingDate = false;
+                this.stateVariables.postAppend = false;
                 lastEntry.dateString = this.testAndAppend(lastEntry.dateString, row[this.datePosition]);
                 lastEntry.eventString = this.testAndAppend(lastEntry.eventString, row[this.eventPosition]);
             }
