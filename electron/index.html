@@ -1,21 +1,38 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    />
-    <meta
-      http-equiv="X-Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    />
-    <title>Hello from Electron renderer!</title>
-  </head>
-  <body>
-    <h1>Hello from Electron renderer!</h1>
-    <p>👋</p>
-    <p id="info"></p>
-  </body>
+<div class="header-container-wrapper">
+  <div class="header-container">
+    <div class="custom-header-bg">
+      <div class="page-center">
+        <div class="logo">Smart File</div>
+        <div class="navigation">
+          <ul>
+            <li><a href="#" class="button open-progress"><i class="fa fa-tasks" aria-hidden="true"></i>Progress</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="body-container-wrapper">
+  <div class="body-container">
+    <div class="page-center">
+      
+      
+      <i class="fa fa-cloud" aria-hidden="true"></i>
+      <h1>Upload Your <strong>Files</strong> To Qbus Server</h1>
+      <a class="upload" id="openBtn"><span>Select Your Upload</span></a>
+    </div>
+  </div>
+  <link rel="stylesheet" href="style.css" />
   <script src="./renderer.js"></script>
-</html>
+</div>
+
+<div class="footer-container-wrapper">
+  <div class="footer-container">
+    <div class="custom-footer-bg">
+      <div class="page-center">
+        <p>@Copyright Qbus</p>
+      </div>
+    </div>
+  </div>
+</div>

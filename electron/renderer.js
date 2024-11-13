@@ -1,6 +1,11 @@
-const func = async () => {
-    const response = await window.versions.ping()
-    console.log(response) // prints out 'pong'
-  }
-  
-  func()
+const { ipcRenderer } = require("electron");
+
+const openBtn = document.getElementById("openBtn");
+openBtn.addEventListener("click", () => {
+    console.log("clicked");
+  ipcRenderer.send("open-file-dialog");
+});
+
+ipcRenderer.on("open-file", (event, filePath, fileContent) => {
+    console.log("open file");
+});
