@@ -5,14 +5,13 @@ let win;
 
 function createWindow() {
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 780,
+    height: 480,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
     },
   });
-  win.webContents.openDevTools()
   win.loadFile("index.html");
 }
 
