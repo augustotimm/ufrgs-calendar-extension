@@ -2,14 +2,21 @@
   "name": "calendar",
   "version": "1.0.0",
   "main": "main.js",
+  "type": "module",
   "scripts": {
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "electron:build": "./node_modules/.bin/electron-rebuild"
   },
   "author": "",
   "license": "ISC",
   "description": "",
+  "dependencies": {
+    "ical-generator": "^7.0.0",
+    "pdfreader": "^3.0.5"
+  },
   "devDependencies": {
-    "electron": "^33.2.0"
+    "electron": "^33.2.0",
+    "@electron/rebuild": "^3.7.1"
   }
 }

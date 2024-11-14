@@ -88,18 +88,12 @@ export class StateMachine {
                     && this.stateVariables.missingDate
                     && this.stateVariables.postAppend
                 ) {
-                    if(this.state === this.PENDING_STRING) {
-                        this.state = this.PENDING_STRING
-                        return;
-                    }
                     this.state = this.END_STRING;
                     return;
-        
                 }
                 if(
                     !this.stateVariables.missingEvent
                     && !this.stateVariables.missingDate
-                    && !this.stateVariables.postAppend
                 ) {
                     this.state = this.DEFAULT
                     return;

@@ -1,6 +1,8 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron/main')
-const path = require('node:path')
-const fs = require("fs");
+import { app, BrowserWindow, ipcMain, dialog } from 'electron/main'
+import path from 'node:path'
+import fs from "fs";
+import { parsePDF } from './pdfParser/index.js';
+
 let win;
 
 function createWindow() {
@@ -39,7 +41,7 @@ ipcMain.on("open-file-dialog", (event) => {
     });
 });
 
-ipcMain.on("save-file-dialog", (event, content) => {
+ipcMain.on("save-file-dialog", (event, filePath, firstWord, separator, lastWord) => {
   dialog
     .showSaveDialog({
       properties: ["createDirectory"],
@@ -48,9 +50,15 @@ ipcMain.on("save-file-dialog", (event, content) => {
         console.log('saved')
       if (!result.canceled) {
         console.log('saved result')
-        const filePath = result.filePath;
-        fs.writeFileSync(filePath, content, "utf-8");
-        event.reply("save-file", filePath);
+        parsePDF(filePath,filePath, separator, lastWord).then(calendar => {
+          fs.writeFileSync(result.filePath+ ".ics", calendar.toString(), "utf-8");
+          dialog.showMessageBox([ {
+            type: 'info',
+            buttons: ['OK'],
+            defaultId: 2,
+            title: 'Arquivo criado com sucesso',
+            detail: `Arquivo criado com sucesso: ${filePath}`,
+          }])        });
       }
     })
     .catch((err) => {
