@@ -5,23 +5,32 @@ const DESCRIPTION_SIZE = 24
 
 
 
-export async function parsePDF() {
-    const eventsFromPDF = await extractDataFromPDF();
+export async function parsePDF(filePath, firstWord, separator, lastWord) {
+    const eventsFromPDF = await extractDataFromPDF(filePath,firstWord, separator, lastWord );
     const result = eventsFromPDF.map((event) => {
-        const resulting = parseDateString(event)
-        if(!resulting){
-            return event.dateString
+        try{
+            const resulting = parseDateString(event)
+            if(!resulting){
+                return event.dateString
+            }
+            delete resulting.dateString;
+            resulting.eventString = event.eventString;
+            let summary;
+            const splitString = event.eventString.split(":");
+            if(splitString.length === 1) {
+                summary = event.eventString.slice(0, DESCRIPTION_SIZE);
+            }
+            resulting.summary = summary;
+            return  resulting;
+        } catch(e) {
+            console.log(e)
         }
-        delete resulting.dateString;
-        resulting.eventString = event.eventString;
-        let summary;
-        const splitString = event.eventString.split(":");
-        if(splitString.length === 1) {
-            summary = event.eventString.slice(0, DESCRIPTION_SIZE);
-        }
-        resulting.summary = summary;
-        return  resulting;
-    })
+
+
+    }).filter(function( element ) {
+        return element !== undefined;
+    });
+
     const calendar = createCalendar(result);
     return calendar;
     
