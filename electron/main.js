@@ -22,7 +22,7 @@ app.whenReady().then(() => {
   createWindow()
 })
 
-ipcMain.on("open-file-dialog", (event) => {
+ipcMain.on("open-file-dialog", (_event) => {
   dialog
     .showOpenDialog({
       properties: ["openFile"],
@@ -30,7 +30,6 @@ ipcMain.on("open-file-dialog", (event) => {
     .then((result) => {
       if (!result.canceled) {
         const filePath = result.filePaths[0];
-        const fileContent = fs.readFileSync(filePath, "utf-8");
         // ipcRenderer.send("file-updated", filePath);
         win.webContents.send("file-updated", filePath);
       }
