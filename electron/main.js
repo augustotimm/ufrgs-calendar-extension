@@ -1,5 +1,4 @@
 import { app, BrowserWindow, ipcMain, dialog } from 'electron/main'
-import path from 'node:path'
 import fs from "fs";
 import { parsePDF } from './pdfParser/index.js';
 
@@ -50,14 +49,14 @@ ipcMain.on("save-file-dialog", (event, filePath, firstWord, separator, lastWord)
         console.log('saved')
       if (!result.canceled) {
         console.log('saved result')
-        parsePDF(filePath,filePath, separator, lastWord).then(calendar => {
+        parsePDF(filePath, firstWord, separator, lastWord).then(calendar => {
           fs.writeFileSync(result.filePath+ ".ics", calendar.toString(), "utf-8");
           dialog.showMessageBox([ {
             type: 'info',
             buttons: ['OK'],
             defaultId: 2,
             title: 'Arquivo criado com sucesso',
-            detail: `Arquivo criado com sucesso: ${filePath}`,
+            detail: `Arquivo criado com sucesso: ${result.filePath}`,
           }])        });
       }
     })
