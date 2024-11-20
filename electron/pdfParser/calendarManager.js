@@ -18,7 +18,7 @@ export const createCalendar = function(contentsList) {
         if(element.endDate) {
             calendar.createEvent({
                 start: element.startDate,
-                end: element.startEnd,
+                end: element.endDate,
                 summary: element.summary,
                 description: element.eventString
             });
