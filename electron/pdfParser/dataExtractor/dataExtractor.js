@@ -1,10 +1,12 @@
 import {PdfReader, TableParser} from "pdfreader";
 import {StateMachine} from "./stateMachine.js";
 
-const tableStarterPhrase = "Primeiro Período Letivo de";
+const tableStarterPhrase = "Calendário Escolar";
 
 const ignoreString = "Segundo Período letivo de";
-const defaultPath = "/Users/i752054/Documents/Repos/ufrgs-calendar-extension/files/portaria.pdf"
+const defaultLastWord = "Dias Letivos na Graduação"
+
+// const defaultPath = "/Users/i752054/Documents/Repos/ufrgs-calendar-extension/files/portaria.pdf"
 let secondRowX = 99;
 let firstRowX = 0;
 let extractX = false;
@@ -78,9 +80,9 @@ async function extractMatrixFromPDF(filepath, firstWord) {
         eventString: string, // event name
     }
 */
-export async function extractDataFromPDF(filepath, firstWord = tableStarterPhrase, lastWord = undefined, separator = ignoreString){
-    const extractedContent = await extractMatrixFromPDF(defaultPath, firstWord);
+export async function extractDataFromPDF(filepath, firstWord = tableStarterPhrase, lastWord = defaultLastWord, separator = ignoreString){
+    const extractedContent = await extractMatrixFromPDF(filepath, firstWord);
     const stateMachine = new StateMachine();
-    return stateMachine.run(extractedContent, firstWord, undefined, separator);
+    return stateMachine.run(extractedContent, firstWord, lastWord, separator);
 
 }

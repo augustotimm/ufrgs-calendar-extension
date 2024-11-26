@@ -6,7 +6,8 @@
   "scripts": {
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "electron:build": "./node_modules/.bin/electron-rebuild"
+    "electron:build": "./node_modules/.bin/electron-rebuild",
+    "parser": "node ./pdfParser/index.js"
   },
   "author": "",
   "license": "ISC",

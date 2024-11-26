@@ -5,10 +5,13 @@ const DESCRIPTION_SIZE = 24
 
 
 
-export async function parsePDF(filePath, firstWord, separator, lastWord) {
-    const eventsFromPDF = await extractDataFromPDF(filePath,firstWord, separator, lastWord );
+export async function parsePDF(filePath, firstWord = undefined, separator = undefined, lastWord = undefined) {
+    const eventsFromPDF = await extractDataFromPDF(filePath,firstWord, lastWord, separator );
     const result = eventsFromPDF.map((event) => {
         try{
+            if(event.eventString.toLowerCase().includes("matrícula de calouros")){
+                console.log("watch")
+            }
             const resulting = parseDateString(event)
             if(!resulting){
                 return event.dateString
@@ -35,3 +38,5 @@ export async function parsePDF(filePath, firstWord, separator, lastWord) {
     return calendar;
     
 }
+
+await parsePDF("/Users/i752054/Downloads/Portaria-Nº-7642-de-18.11.2024.pdf")
