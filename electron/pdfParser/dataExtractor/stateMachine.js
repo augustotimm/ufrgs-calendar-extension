@@ -60,11 +60,9 @@ export class StateMachine {
                     this.state = this.MISSING_DATE
                     return;
                 }
-                if(this.stateVariables.postAppend) {
-                    if(!this.stateVariables.missingDate ) {
-                        this.state = this.POST_APPEND;
-                        return;
-                    }
+                if(this.stateVariables.postAppend && !this.stateVariables.missingDate) {
+                    this.state = this.POST_APPEND;
+                    return;
                 }
                 break;
             
@@ -138,6 +136,9 @@ export class StateMachine {
                     return;
                 }
                 break;
+            case this.END_STRING:
+                this.state = this.END_STRING;
+                return;
         }
 
         console.log("State not calculated");
@@ -245,13 +246,18 @@ export class StateMachine {
 
     }
 
+    testForEndState(row, lastWord, semesterSeparator) {
+        return !!((row[this.eventPosition] && row[this.eventPosition].toLowerCase().includes(lastWord.toLowerCase()))
+            || (row[this.datePosition] && row[this.datePosition].toLowerCase().includes(lastWord.toLowerCase())));
+    }
+
     stateFunctions = {
         default: (row, lastEntry, {lastWord}) => {
-            if((row[this.eventPosition] && row[this.eventPosition].toLowerCase().includes(lastWord.toLowerCase()))
-                || (row[this.datePosition] && row[this.datePosition].toLowerCase().includes(lastWord.toLowerCase()))) {
+            if(this.testForEndState(row, lastWord)){
                 this.restartStateMachine(true);
-                return false;
+                return false
             }
+
             if(!row[this.datePosition] && row[this.eventPosition]){
                 if(this.testSpecialEvent(row[this.eventPosition])) {
                     this.stateVariables.missingDate = false;
@@ -306,6 +312,8 @@ export class StateMachine {
                 
             }
             else{
+                this.stateVariables.postAppend = false;
+                this.stateVariables.missingDate = false;
                 this.stateVariables.missingEvent = true;
             }
             if(row[this.datePosition]) {
@@ -318,7 +326,8 @@ export class StateMachine {
             }
             if(row[this.datePosition]) {
 
-                this.stateVariables.postAppend = true
+                this.stateVariables.postAppend = true;
+                this.stateVariables.missingEvent = false;
                 this.stateVariables.missingDate = incompleteDateRegexp.test(row[this.datePosition]);
 
 
@@ -338,8 +347,7 @@ export class StateMachine {
             }
         },
         postAppend: (row, lastEntry, {lastWord}) => {
-            if((row[this.eventPosition] && row[this.eventPosition].toLowerCase().includes(lastWord.toLowerCase()))
-                || (row[this.datePosition] && row[this.datePosition].toLowerCase().includes(lastWord.toLowerCase()))) {
+            if(this.testForEndState(row, lastWord)) {
                 this.restartStateMachine(true);
                 return false;
             }
