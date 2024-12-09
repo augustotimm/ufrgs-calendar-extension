@@ -22,6 +22,8 @@ export async function parsePDF(filePath, firstWord = undefined, separator = unde
             const splitString = event.eventString.split(":");
             if(splitString.length === 1) {
                 summary = event.eventString.slice(0, DESCRIPTION_SIZE);
+            } else {
+                summary = splitString[0];
             }
             resulting.summary = summary;
             return  resulting;
