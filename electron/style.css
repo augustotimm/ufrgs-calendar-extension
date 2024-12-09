@@ -483,6 +483,7 @@ text-align: center;
 &:nth-child(5) {
   background: #B2E3AF;
 }
+    }
 
 span {
   position: relative;
@@ -905,7 +906,7 @@ transition: all .3s ease-in-out;
   left: 0;
   bottom: 8px;
   padding: 5px 15px;
-  color: #032429;
+  color: transparent;
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;

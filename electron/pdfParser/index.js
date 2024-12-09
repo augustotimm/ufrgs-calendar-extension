@@ -41,4 +41,4 @@ export async function parsePDF(filePath, firstWord = undefined, separator = unde
     
 }
 
-await parsePDF("/Users/i752054/Downloads/Portaria-Nº-7642-de-18.11.2024.pdf")
+// await parsePDF("/Users/i752054/Downloads/Portaria-Nº-7642-de-18.11.2024.pdf")
