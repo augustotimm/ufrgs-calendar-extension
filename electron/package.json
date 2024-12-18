@@ -5,19 +5,31 @@
   "type": "module",
   "scripts": {
     "start": "electron .",
+    "forge:start": "electron-forge start",
     "test": "echo \"Error: no test specified\" && exit 1",
     "electron:build": "./node_modules/.bin/electron-rebuild",
-    "parser": "node ./pdfParser/index.js"
+    "parser": "node ./pdfParser/index.js",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "electron-squirrel-startup": "^1.0.1",
     "ical-generator": "^7.0.0",
     "pdfreader": "^3.0.5"
   },
   "devDependencies": {
-    "electron": "^33.2.0",
-    "@electron/rebuild": "^3.7.1"
+    "@electron-forge/cli": "^7.6.0",
+    "@electron-forge/maker-deb": "^7.6.0",
+    "@electron-forge/maker-rpm": "^7.6.0",
+    "@electron-forge/maker-squirrel": "^7.6.0",
+    "@electron-forge/maker-zip": "^7.6.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.6.0",
+    "@electron-forge/plugin-fuses": "^7.6.0",
+    "@electron/fuses": "^1.8.0",
+    "@electron/rebuild": "^3.7.1",
+    "electron": "^33.2.0"
   }
 }

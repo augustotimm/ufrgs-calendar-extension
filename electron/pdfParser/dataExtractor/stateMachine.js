@@ -60,7 +60,10 @@ export class StateMachine {
                     this.state = this.MISSING_DATE
                     return;
                 }
-                if(this.stateVariables.postAppend && !this.stateVariables.missingDate) {
+                if(
+                    this.stateVariables.postAppend
+                    && !this.stateVariables.missingDate
+                ) {
                     this.state = this.POST_APPEND;
                     return;
                 }
@@ -144,7 +147,7 @@ export class StateMachine {
         console.log("State not calculated");
     }
 
-    restartStateMachine(entry = false){
+    restartStateMachine(entry = false) {
         this.stateVariables.missingEvent = entry;
         this.stateVariables.missingDate = entry;
         this.stateVariables.postAppend = entry;
@@ -209,13 +212,11 @@ export class StateMachine {
                 }
                 index ++;
 
-                const containsSeparator = row.reduce((acc, curr = '' ) => acc || curr.toLowerCase().includes(semesterSeparator.toLowerCase()), false);
+                const containsSeparator = row.reduce((acc, curr = '' ) =>
+                    acc || curr.toLowerCase().includes(semesterSeparator.toLowerCase()), false);
 
                 if(!containsSeparator || this.state === this.PENDING_STRING){
 
-                    if(row.reduce((acc, curr = '' ) => acc || curr.toLowerCase().includes("das vagas".toLowerCase()), false)){
-                        console.log("KEEP EYE")
-                    }
                     const result = this.stateFunctions[this.state](
                         row,
                         finalContent[finalContent.length - 1],
@@ -229,14 +230,7 @@ export class StateMachine {
                     this.firstEvent = true;
                     console.log("ignore")
                 }
-                if(this.stateVariables.missingEvent && this.stateVariables.missingDate && this.stateVariables.postAppend) {
-                    console.log("KEEP EYE")
-
-                }
                 this.calculateState();
-                if(this.state === this.END_STRING) {
-                    console.log("KEEP EYE")
-                }
             }
         }
         this.restartStateMachine(true);
@@ -309,7 +303,6 @@ export class StateMachine {
                 this.stateVariables.missingDate = false;
 
                 lastEntry.eventString = row[this.eventPosition];
-                
             }
             else{
                 this.stateVariables.postAppend = false;
@@ -325,11 +318,9 @@ export class StateMachine {
                 lastEntry.eventString = this.testAndAppend(lastEntry.eventString, row[this.eventPosition]);
             }
             if(row[this.datePosition]) {
-
                 this.stateVariables.postAppend = true;
                 this.stateVariables.missingEvent = false;
                 this.stateVariables.missingDate = incompleteDateRegexp.test(row[this.datePosition]);
-
 
                 lastEntry.dateString = this.testAndAppend(lastEntry.dateString, row[this.datePosition]);
 
@@ -370,7 +361,6 @@ export class StateMachine {
                         dateString: undefined
                     }
                 }
-                // TODO test remove this
                 lastEntry.eventString = this.testAndAppend(lastEntry.eventString, row[this.eventPosition]);
             
                 return;
