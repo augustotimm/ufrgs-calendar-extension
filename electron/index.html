@@ -1,21 +1,31 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    />
-    <meta
-      http-equiv="X-Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    />
-    <title>Hello from Electron renderer!</title>
-  </head>
-  <body>
-    <h1>Hello from Electron renderer!</h1>
-    <p>👋</p>
-    <p id="info"></p>
-  </body>
+
+
+<div class="body-container-wrapper">
+  <div class="body-container">
+    <div class="row">
+      <span>
+        <input class="balloon" id="firstWordText" type="text" placeholder="Primeiro Período Letivo de 2024" /><label for="firstWordText">Primeira frase do calendario</label>
+      </span>
+      <span>
+        <input class="balloon" id="separatorText" type="text" placeholder="Segundo Período letivo de" /><label for="separatorText">Separador de semestre</label>
+      </span>
+      <span>
+        <input class="balloon" id="lastWordText" type="text" placeholder="Dias Letivos na Graduação" /><label for="lastWordText">Primeira palavra após a tabela</label>
+      </span>
+    </div>
+    <div class="row">
+      <span>
+        <label for="filePathText">Arquivo:</label> <input id="filePathText" type="text" disabled="disabled"/>
+      </span>
+    </div>
+    
+    <div class="row">
+      <i class="fa fa-cloud" aria-hidden="true"></i>
+      <h3>Abra o arquivo de <strong>Calendario</strong> da UFRGS</h3>
+      <a class="upload" id="openBtn"><span>Abrir arquivo</span></a>
+      <a class="upload" id="startButton"><span>Exportar Calendario</span></a>
+    </div>
+  </div>
+  <link rel="stylesheet" href="style.css" />
   <script src="./renderer.js"></script>
-</html>
+</div>

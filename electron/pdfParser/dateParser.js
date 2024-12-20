@@ -48,10 +48,10 @@ const getdatesFromDateTimeRangeFromString = function(dateTimeRangeString) {
     };
     let dateMatchArray = null;
     if((dateMatchArray = dateHourRangeFormat1.exec(dateTimeRangeString)) !== null) {
-        const splitStartDate = dateMatchArray[0].split('/');
-        resultingDAte.startDate = new Date(parseInt(splitStartDate[2]), parseInt(splitStartDate[1]), parseInt(splitStartDate[0]), parseInt(dateMatchArray[1]))
-        const splitEndDate = dateMatchArray[2].split('/');
-        resultingDAte.endDate = new Date(parseInt(splitEndDate[2]), parseInt(splitEndDate[1]), parseInt(splitEndDate[0]), parseInt(dateMatchArray[3]), parseInt(dateMatchArray[4]))
+        const splitStartDate = dateMatchArray[1].split('/');
+        resultingDAte.startDate = new Date(parseInt(splitStartDate[2]), parseInt(splitStartDate[1]), parseInt(splitStartDate[0]), parseInt(dateMatchArray[2]))
+        const splitEndDate = dateMatchArray[3].split('/');
+        resultingDAte.endDate = new Date(parseInt(splitEndDate[2]), parseInt(splitEndDate[1]), parseInt(splitEndDate[0]), parseInt(dateMatchArray[4]), parseInt(dateMatchArray[5]))
 
         return resultingDAte;
     } else {
