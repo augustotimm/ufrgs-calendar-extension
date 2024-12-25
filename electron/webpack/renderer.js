@@ -1,4 +1,5 @@
 const { ipcRenderer } = require("electron");
+const preloadPath = window.electron.getPreloadPath();
 
 const openBtn = document.getElementById("openBtn");
 const startBtn = document.getElementById("startButton");
