@@ -10,6 +10,8 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
+        preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY
+
     },
   });
   // win.webContents.openDevTools()
