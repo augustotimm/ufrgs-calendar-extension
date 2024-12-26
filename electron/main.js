@@ -1,7 +1,7 @@
-import { app, BrowserWindow, ipcMain, dialog } from 'electron/main'
+import { app, BrowserWindow, ipcMain, dialog } from 'electron'
 import fs from "fs";
 import { parsePDF } from './pdfParser/index.js';
-
+import path from "path";
 let win;
 
 function createWindow() {
@@ -11,13 +11,10 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
   });
-  mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-
   // win.webContents.openDevTools()
-  win.loadFile("index.html");
+  win.loadFile("./index.html");
 }
 
 
@@ -66,8 +63,4 @@ ipcMain.on("save-file-dialog", (event, filePath, firstWord, separator, lastWord)
     .catch((err) => {
       console.log(err);
     });
-});
-
-ipcMain.on('get-preload-path', (e) => {
-  e.returnValue = WINDOW_PRELOAD_WEBPACK_ENTRY;
 });

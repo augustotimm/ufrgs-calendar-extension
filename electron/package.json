@@ -1,7 +1,7 @@
 {
   "name": "ufrgs-calendar-export",
   "version": "1.0.0",
-  "main": "./webpack/main",
+  "main": "./.webpack/main",
   "type": "module",
   "scripts": {
     "start": "electron .",
@@ -10,7 +10,8 @@
     "electron:build": "./node_modules/.bin/electron-rebuild",
     "parser": "node ./pdfParser/index.js",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "build": "webpack",
+    "create:app": "rm -rf ./ufrgs-calendar-export && npx create-electron-app@latest ufrgs-calendar-export --template=webpack"
   },
   "author": "",
   "license": "ISC",
@@ -31,6 +32,8 @@
     "@electron-forge/plugin-webpack": "^7.6.0",
     "@electron/fuses": "^1.8.0",
     "@electron/rebuild": "^3.7.1",
-    "electron": "^33.2.0"
+    "electron": "^33.2.0",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1"
   }
 }
